@@ -300,7 +300,6 @@ public class MainActivityFragment extends Fragment {
                 for (int i = 0; i < size; i++) {
                     mForecastAdapter.add(s[i]);
                 }
-                Log.i(TAG, "updated adapter");
             }
         }
     }
