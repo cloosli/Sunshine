@@ -96,7 +96,7 @@ public class MainActivityFragment extends Fragment {
     }
 
     public class FetchWeatherTask extends AsyncTask<String, Void, String[]> {
-        private final String TAG = FetchWeatherTask.class.getSimpleName();
+        private final String LOG_TAG = FetchWeatherTask.class.getSimpleName();
 
         /* The date/time conversion code is going to be moved outside the asynctask later,
         * so for convenience we're breaking it out into its own method now.
@@ -263,7 +263,7 @@ public class MainActivityFragment extends Fragment {
                 forecastJsonStr = buffer.toString();
 
             } catch (IOException e) {
-                Log.e(TAG, "Error ", e);
+                Log.e(LOG_TAG, "Error ", e);
                 // If the code didn't successfully get the weather data, there's no point in attemping
                 // to parse it.
                 return null;
@@ -275,7 +275,7 @@ public class MainActivityFragment extends Fragment {
                     try {
                         reader.close();
                     } catch (final IOException e) {
-                        Log.e(TAG, "Error closing stream", e);
+                        Log.e(LOG_TAG, "Error closing stream", e);
                     }
                 }
             }
@@ -283,7 +283,7 @@ public class MainActivityFragment extends Fragment {
             try {
                 return getWeatherDataFromJson(forecastJsonStr, numDays);
             } catch (JSONException e) {
-                Log.e(TAG, e.getMessage(), e);
+                Log.e(LOG_TAG, e.getMessage(), e);
             }
 
             return null;
