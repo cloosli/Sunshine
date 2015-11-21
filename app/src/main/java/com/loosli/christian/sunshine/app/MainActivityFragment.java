@@ -180,9 +180,6 @@ public class MainActivityFragment extends Fragment {
                 resultStrs[i] = day + " - " + description + " - " + highAndLow;
             }
 
-            for (String s : resultStrs) {
-                Log.v(TAG, "Forecast entry: " + s);
-            }
             return resultStrs;
 
         }
@@ -226,8 +223,6 @@ public class MainActivityFragment extends Fragment {
                         .build();
 
                 URL url = new URL(builtUri.toString());
-
-                Log.v(TAG, "Built URI " + builtUri.toString());
 
                 // Create the request to OpenWeatherMap, and open the connection
                 urlConnection = (HttpURLConnection) url.openConnection();
@@ -276,17 +271,9 @@ public class MainActivityFragment extends Fragment {
             }
 
             try {
-                JSONObject forecast = new JSONObject(forecastJsonStr);
-                JSONArray array = forecast.getJSONArray("list");
-//                for (int i = 0; i<array.length(); i++) {
-//                    JSONObject item = array.getJSONObject(i);
-//                    return item.getString("clouds");
-//                }
-
                 return getWeatherDataFromJson(forecastJsonStr, numDays);
-
-            } catch (Exception e) {
-                Log.e(TAG, "error", e);
+            } catch (JSONException e) {
+                Log.e(TAG, e.getMessage(), e);
             }
 
             return null;
