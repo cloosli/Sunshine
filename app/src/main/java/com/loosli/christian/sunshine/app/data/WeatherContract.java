@@ -57,7 +57,6 @@ public class WeatherContract {
         public static final String COLUMN_COORD_LONG = "coord_long";
     }
 
-    /* Inner class that defines the table contents of the weather table */
     /* Inner class that defines the contents of the weather table */
     public static final class WeatherEntry implements BaseColumns {
 
