@@ -8,8 +8,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
-import com.loosli.christian.sunshine.app.data.WeatherContract;
-
 /**
  * {@link ForecastAdapter}exposes a list of weather forecasts
  * from a{@link android.database.Cursor}to a{@link android.widget.ListView}.
@@ -34,18 +32,12 @@ public class ForecastAdapter extends CursorAdapter {
         string.
      */
     private String convertCursorRowToUXFormat(Cursor cursor) {
-        // get row indices for our cursor
-        int idx_max_temp = cursor.getColumnIndex(WeatherContract.WeatherEntry.COLUMN_MAX_TEMP);
-        int idx_min_temp = cursor.getColumnIndex(WeatherContract.WeatherEntry.COLUMN_MIN_TEMP);
-        int idx_date = cursor.getColumnIndex(WeatherContract.WeatherEntry.COLUMN_DATE);
-        int idx_short_desc = cursor.getColumnIndex(WeatherContract.WeatherEntry.COLUMN_SHORT_DESC);
-
         String highAndLow = formatHighLows(
-                cursor.getDouble(idx_max_temp),
-                cursor.getDouble(idx_min_temp));
+                cursor.getDouble(ForecastFragment.COL_WEATHER_MAX_TEMP),
+                cursor.getDouble(ForecastFragment.COL_WEATHER_MIN_TEMP));
 
-        return Utility.formatDate(cursor.getLong(idx_date)) +
-                " - " + cursor.getString(idx_short_desc) +
+        return Utility.formatDate(cursor.getLong(ForecastFragment.COL_WEATHER_DATE)) +
+                " - " + cursor.getString(ForecastFragment.COL_WEATHER_DESC) +
                 " - " + highAndLow;
     }
 
@@ -67,7 +59,7 @@ public class ForecastAdapter extends CursorAdapter {
         // our view is pretty simple here --- just a text view
         // we'll keep the UI functional with a simple (and slow!) binding.
 
-        TextView tv = (TextView) view;
+        TextView tv = (TextView) view.findViewById(R.id.list_item_forecast_textview);
         tv.setText(convertCursorRowToUXFormat(cursor));
     }
 }
