@@ -37,8 +37,8 @@ public class Utility {
         return String.format("%.0f", temp);
     }
 
-    static String formatDate(long dateInMillis) {
-        Date date = new Date(dateInMillis);
+    static String formatDate(long dateInMilliseconds) {
+        Date date = new Date(dateInMilliseconds);
         return DateFormat.getDateInstance().format(date);
     }
 
