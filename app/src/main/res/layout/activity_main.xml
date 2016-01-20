@@ -26,8 +26,7 @@
         android:name="com.loosli.christian.sunshine.app.ForecastFragment"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_marginLeft="16dp"
-        android:layout_marginRight="16dp"
+        app:layout_behavior="@string/appbar_scrolling_view_behavior"
         tools:context="com.example.android.sunshine.app.ForecastFragment"
         tools:layout="@android:layout/list_content" />
 
