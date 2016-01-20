@@ -21,6 +21,14 @@
 
     </android.support.design.widget.AppBarLayout>
 
-    <include layout="@layout/content_main" />
+    <fragment
+        android:id="@+id/fragment_forecast"
+        android:name="com.loosli.christian.sunshine.app.ForecastFragment"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_marginLeft="16dp"
+        android:layout_marginRight="16dp"
+        tools:context="com.example.android.sunshine.app.ForecastFragment"
+        tools:layout="@android:layout/list_content" />
 
 </android.support.design.widget.CoordinatorLayout>
