@@ -1,5 +1,6 @@
 <!-- Master layout. -->
 <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
@@ -14,13 +15,13 @@
             android:id="@+id/detail_day_textview"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Tomorrow" />
+            tools:text="Tomorrow" />
 
         <TextView
             android:id="@+id/detail_date_textview"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="June 24"/>
+            tools:text="June 24" />
 
         <!-- Main content: high, low, art, weather state -->
         <LinearLayout
@@ -31,27 +32,27 @@
 
             <LinearLayout
                 android:layout_width="0dp"
-                android:layout_weight="1"
                 android:layout_height="wrap_content"
+                android:layout_weight="1"
                 android:orientation="vertical">
 
                 <TextView
                     android:id="@+id/detail_high_textview"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="21°"/>
+                    tools:text="21°" />
 
                 <TextView
                     android:id="@+id/detail_low_textview"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="11°" />
+                    tools:text="11°" />
             </LinearLayout>
 
             <LinearLayout
                 android:layout_width="0dp"
-                android:layout_weight="1"
                 android:layout_height="wrap_content"
+                android:layout_weight="1"
                 android:gravity="center_horizontal"
                 android:orientation="vertical">
 
@@ -65,7 +66,7 @@
                     android:id="@+id/detail_forecast_textview"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Clear" />
+                    tools:text="Clear" />
             </LinearLayout>
         </LinearLayout>
 
@@ -74,18 +75,18 @@
             android:id="@+id/detail_humidity_textview"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="48%" />
+            tools:text="48%" />
 
         <TextView
             android:id="@+id/detail_wind_textview"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="6 km/h NW" />
+            tools:text="6 km/h NW" />
 
         <TextView
             android:id="@+id/detail_pressure_textview"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="1014" />
+            tools:text="1014" />
     </LinearLayout>
 </ScrollView>
