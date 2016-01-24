@@ -7,6 +7,8 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_gravity="left"
+        android:gravity="center_vertical"
         android:orientation="vertical"
         android:padding="16dp">
 
@@ -15,12 +17,18 @@
             android:id="@+id/detail_day_textview"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:fontFamily="sans-serif-condensed"
+            android:textColor="@color/black"
+            android:textSize="24sp"
             tools:text="Tomorrow" />
 
         <TextView
             android:id="@+id/detail_date_textview"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:fontFamily="sans-serif-condensed"
+            android:textColor="@color/grey_700"
+            android:textSize="16sp"
             tools:text="June 24" />
 
         <!-- Main content: high, low, art, weather state -->
@@ -28,31 +36,37 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_marginTop="16dp"
+            android:gravity="center_horizontal"
             android:orientation="horizontal">
 
             <LinearLayout
-                android:layout_width="0dp"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_weight="1"
+                android:gravity="left"
                 android:orientation="vertical">
 
                 <TextView
                     android:id="@+id/detail_high_textview"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:fontFamily="sans-serif-light"
+                    android:textSize="96sp"
                     tools:text="21°" />
 
                 <TextView
                     android:id="@+id/detail_low_textview"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:layout_gravity="center_horizontal"
+                    android:textColor="@color/grey_700"
+                    android:textSize="48sp"
                     tools:text="11°" />
             </LinearLayout>
 
             <LinearLayout
-                android:layout_width="0dp"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_weight="1"
+                android:layout_gravity="center"
                 android:gravity="center_horizontal"
                 android:orientation="vertical">
 
@@ -60,33 +74,48 @@
                     android:id="@+id/detail_icon"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:src="@drawable/art_clear" />
+                    tools:src="@drawable/art_clear" />
 
                 <TextView
                     android:id="@+id/detail_forecast_textview"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:textAppearance="?android:textAppearanceLarge"
+                    android:textColor="@color/grey_700"
                     tools:text="Clear" />
             </LinearLayout>
         </LinearLayout>
 
         <!-- Humidity, wind, pressure -->
-        <TextView
-            android:id="@+id/detail_humidity_textview"
+        <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            tools:text="48%" />
+            android:layout_height="match_parent"
+            android:layout_marginRight="0dp"
+            android:layout_marginTop="16dp"
+            android:orientation="vertical">
 
-        <TextView
-            android:id="@+id/detail_wind_textview"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            tools:text="6 km/h NW" />
+            <TextView
+                android:id="@+id/detail_humidity_textview"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textAppearance="?android:textAppearanceLarge"
+                tools:text="48%" />
 
-        <TextView
-            android:id="@+id/detail_pressure_textview"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            tools:text="1014" />
+            <TextView
+                android:id="@+id/detail_pressure_textview"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="4dp"
+                android:textAppearance="?android:textAppearanceLarge"
+                tools:text="1014" />
+
+            <TextView
+                android:id="@+id/detail_wind_textview"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="4dp"
+                android:textAppearance="?android:textAppearanceLarge"
+                tools:text="6 km/h NW" />
+        </LinearLayout>
     </LinearLayout>
 </ScrollView>

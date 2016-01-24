@@ -3,7 +3,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:fillViewport="false">
+    android:fillViewport="true">
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -14,6 +14,7 @@
         <LinearLayout
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:minWidth="56dp"
             android:orientation="vertical">
 
             <!-- Header: Day, Date -->
@@ -21,12 +22,18 @@
                 android:id="@+id/detail_day_textview"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:fontFamily="sans-serif-condensed"
+                android:minWidth="120dp"
+                android:textSize="24sp"
                 tools:text="Tomorrow" />
 
             <TextView
                 android:id="@+id/detail_date_textview"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:fontFamily="sans-serif-condensed"
+                android:textColor="@color/grey_700"
+                android:textSize="20sp"
                 tools:text="June 24" />
 
         </LinearLayout>
@@ -42,12 +49,17 @@
                 android:id="@+id/detail_high_textview"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:fontFamily="sans-serif-light"
+                android:textSize="96sp"
                 tools:text="21°" />
 
             <TextView
                 android:id="@+id/detail_low_textview"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_marginLeft="8dp"
+                android:textColor="@color/grey_700"
+                android:textSize="48sp"
                 tools:text="11°" />
 
             <!-- Humidity, wind, pressure -->
@@ -55,24 +67,34 @@
                 android:id="@+id/detail_humidity_textview"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_marginTop="4dp"
+                android:fontFamily="sans-serif-condensed"
+                android:textAppearance="?android:textAppearanceLarge"
                 tools:text="48%" />
 
             <TextView
                 android:id="@+id/detail_pressure_textview"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_marginTop="4dp"
+                android:fontFamily="sans-serif-condensed"
+                android:textAppearance="?android:textAppearanceLarge"
                 tools:text="1014" />
 
             <TextView
                 android:id="@+id/detail_wind_textview"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_marginTop="4dp"
+                android:fontFamily="sans-serif-condensed"
+                android:textAppearance="?android:textAppearanceLarge"
                 tools:text="6 km/h NW" />
         </LinearLayout>
 
         <LinearLayout
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_marginLeft="16dp"
             android:gravity="center_horizontal"
             android:orientation="vertical">
 
@@ -80,12 +102,16 @@
                 android:id="@+id/detail_icon"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:src="@drawable/art_clear"/>
+                tools:src="@drawable/art_clear" />
 
             <TextView
                 android:id="@+id/detail_forecast_textview"
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content" tools:text="Clear" />
+                android:layout_height="wrap_content"
+                android:fontFamily="sans-serif-condensed"
+                android:textAppearance="?android:textAppearanceLarge"
+                android:textColor="@color/grey_700"
+                tools:text="Clear" />
         </LinearLayout>
     </LinearLayout>
 </ScrollView>

@@ -1,57 +1,73 @@
-<?xml version="1.0" encoding="utf-8"?>
+<!-- Layout for weather forecast list item for today -->
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:background="@drawable/touch_selector"
+    android:background="@drawable/today_touch_selector"
     android:gravity="center_vertical"
     android:minHeight="?android:attr/listPreferredItemHeight"
-    android:orientation="horizontal"
-    android:padding="16dp">
+    android:orientation="horizontal">
 
     <LinearLayout
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_weight="1"
-        android:gravity="center_horizontal"
+        android:layout_marginBottom="16dp"
+        android:layout_marginLeft="60dp"
+        android:layout_marginTop="16dp"
+        android:layout_weight="7"
         android:orientation="vertical">
 
         <TextView
             android:id="@+id/list_item_date_textview"
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:fontFamily="sans-serif-condensed"
+            android:textAppearance="?android:textAppearanceLarge"
+            android:textColor="@color/white"
             tools:text="Today, December 14" />
 
         <TextView
             android:id="@+id/list_item_high_textview"
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:fontFamily="sans-serif-light"
+            android:textColor="@color/white"
+            android:textSize="72sp"
             tools:text="21" />
 
         <TextView
             android:id="@+id/list_item_low_textview"
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_marginLeft="8dp"
+            android:textColor="@color/white"
+            android:textSize="36sp"
             tools:text="8" />
     </LinearLayout>
 
     <LinearLayout
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_weight="1"
-        android:gravity="center_horizontal"
+        android:layout_marginRight="16dp"
+        android:layout_weight="5"
+        android:gravity="center_horizontal|bottom"
         android:orientation="vertical">
 
         <ImageView
             android:id="@+id/list_item_icon"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            tools:src="#ddd" />
+            android:layout_gravity="center_horizontal"
+            tools:src="@drawable/art_clear" />
 
         <TextView
             android:id="@+id/list_item_forecast_textview"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:fontFamily="sans-serif-condensed"
+            android:textAppearance="?android:textAppearanceLarge"
+            android:textColor="@color/white"
             tools:text="CLEAR" />
     </LinearLayout>
 </LinearLayout>
