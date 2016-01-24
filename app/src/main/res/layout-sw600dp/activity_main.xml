@@ -46,7 +46,8 @@
             android:id="@+id/weather_detail_container"
             android:layout_width="0dp"
             android:layout_height="match_parent"
-            android:layout_weight="4"
+            android:layout_weight="3"
+            android:layout_marginTop="?attr/actionBarSize"
             app:layout_behavior="@string/appbar_scrolling_view_behavior" />
 
     </LinearLayout>
