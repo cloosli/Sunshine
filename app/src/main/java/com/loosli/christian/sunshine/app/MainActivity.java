@@ -3,15 +3,14 @@ package com.loosli.christian.sunshine.app;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
-import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.Toolbar;
+import android.support.v7.app.ActionBarActivity;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 
-public class MainActivity extends AppCompatActivity implements ForecastFragment.Callback {
+public class MainActivity extends ActionBarActivity implements ForecastFragment.Callback {
 
-    private static final String LOG_TAG = MainActivity.class.getSimpleName();
+    private final String LOG_TAG = MainActivity.class.getSimpleName();
     private static final String DETAILFRAGMENT_TAG = "DFTAG";
 
     private boolean mTwoPane;
@@ -20,10 +19,9 @@ public class MainActivity extends AppCompatActivity implements ForecastFragment.
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
-        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
-        setSupportActionBar(toolbar);
         mLocation = Utility.getPreferredLocation(this);
+
+        setContentView(R.layout.activity_main);
         if (findViewById(R.id.weather_detail_container) != null) {
             // The detail container view will be present only in the large-screen layouts
             // (res/layout-sw600dp). If this view is present, then the activity should be
@@ -39,10 +37,11 @@ public class MainActivity extends AppCompatActivity implements ForecastFragment.
             }
         } else {
             mTwoPane = false;
+            getSupportActionBar().setElevation(0f);
         }
 
-        ForecastFragment forecastFragment = (ForecastFragment) getSupportFragmentManager()
-                .findFragmentById(R.id.fragment_forecast);
+        ForecastFragment forecastFragment =  ((ForecastFragment)getSupportFragmentManager()
+                .findFragmentById(R.id.fragment_forecast));
         forecastFragment.setUseTodayLayout(!mTwoPane);
     }
 
