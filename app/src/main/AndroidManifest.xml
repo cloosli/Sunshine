@@ -44,6 +44,9 @@
             android:authorities="com.loosli.christian.sunshine.app" />
 
         <service android:name=".service.SunshineService"></service>
+        <receiver
+            android:name=".service.SunshineService$AlarmReceiver"
+            android:enabled="true" />
 
     </application>
 
