@@ -76,4 +76,9 @@
     <!-- Humidity format CHAR LIMIT=25]-->
     <string name="format_humidity">Humidity: <xliff:g id="humidity">%1.0f</xliff:g> %%</string>
 
+    <!-- Account type (for sync-adapter authenticator) -->
+    <!-- SyncAdapter related -->
+    <string name="sync_account_type">sunshine.christian.loosli.com</string>
+    <string name="content_authority">com.loosli.christian.sunshine.app</string>
+
 </resources>
