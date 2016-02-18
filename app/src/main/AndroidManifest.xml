@@ -47,7 +47,7 @@
         </activity>
 
         <provider
-            android:authorities="com.loosli.christian.sunshine.app"
+            android:authorities="@string/content_authority"
             android:name=".data.WeatherProvider"
             android:exported="false"
             android:syncable="true" />
