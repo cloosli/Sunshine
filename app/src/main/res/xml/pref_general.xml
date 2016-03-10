@@ -4,7 +4,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-    <com.example.android.sunshine.app.LocationEditTextPreference
+    <com.loosli.christian.sunshine.app.LocationEditTextPreference
         android:defaultValue="@string/pref_location_default"
         android:inputType="text"
         android:key="@string/pref_location_key"
