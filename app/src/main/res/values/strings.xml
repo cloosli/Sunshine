@@ -53,6 +53,24 @@
     <!-- Value in SharedPreferences for imperial temperature unit option [CHAR LIMIT=NONE] -->
     <string name="pref_units_imperial" translatable="false">imperial</string>
 
+    <!-- Label for the art pack preference [CHAR LIMIT=30] -->
+    <string name="pref_art_pack_label">Icon Pack</string>
+
+    <!-- Label for Sunshine option in art pack preference [CHAR LIMIT=25] -->
+    <string name="pref_art_pack_label_sunshine">Sunshine</string>
+
+    <!-- Label for cute dogs option in art pack preference [CHAR LIMIT=25] -->
+    <string name="pref_art_pack_label_cute_dogs">Cute dogs</string>
+
+    <!-- Key name for art pack unit preference in SharedPreferences [CHAR LIMIT=NONE] -->
+    <string name="pref_art_pack_key" translatable="false">art_pack</string>
+
+    <!-- Value in SharedPreferences for Sunshine art pack option [CHAR LIMIT=NONE] -->
+    <string name="pref_art_pack_sunshine" translatable="false">https://raw.githubusercontent.com/udacity/Sunshine-Version-2/sunshine_master/app/src/main/res/drawable-xxhdpi/art_%s.png</string>
+
+    <!-- Value in SharedPreferences for cute dogs art pack  option [CHAR LIMIT=NONE] -->
+    <string name="pref_art_pack_cute_dogs" translatable="false">https://raw.githubusercontent.com/udacity/Sunshine-Version-2/sunshine_master/app/src/main/res/drawable-mdpi/art_%s.png</string>
+
     <!-- Strings used when displaying the state of the Location in settings -->
     <string name="pref_location_error_description">Invalid Location (<xliff:g id="location_setting">%1$s</xliff:g>)"</string>
     <string name="pref_location_unknown_description">Validating Location... (<xliff:g id="location_setting">%1$s</xliff:g>)"</string>
@@ -137,11 +155,14 @@
     <string name="condition_602">Heavy Snow</string>
     <string name="condition_611">Sleet</string>
     <string name="condition_612">Shower Sleet</string>
-    <string name="condition_615">Rain and Snow</string> <!-- light rain and snow -->
+    <string name="condition_615">Rain and Snow</string>
+    <!-- light rain and snow -->
     <string name="condition_616">Rain and Snow</string>
-    <string name="condition_620">Shower Snow</string> <!-- light shower snow -->
+    <string name="condition_620">Shower Snow</string>
+    <!-- light shower snow -->
     <string name="condition_621">Shower Snow</string>
-    <string name="condition_622">Shower Snow</string> <!-- heavy shower snow -->
+    <string name="condition_622">Shower Snow</string>
+    <!-- heavy shower snow -->
     <string name="condition_701">Mist</string>
     <string name="condition_711">Smoke</string>
     <string name="condition_721">Haze</string>
@@ -167,7 +188,8 @@
     <string name="condition_951">Calm</string>
     <string name="condition_952">Light Breeze</string>
     <string name="condition_953">Gentle Breeze</string>
-    <string name="condition_954">Breeze</string> <!-- moderate breeze -->
+    <string name="condition_954">Breeze</string>
+    <!-- moderate breeze -->
     <string name="condition_955">Fresh Breeze</string>
     <string name="condition_956">Strong Breeze</string>
     <string name="condition_957">High Wind</string>
