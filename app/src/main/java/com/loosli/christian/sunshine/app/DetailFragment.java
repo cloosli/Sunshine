@@ -20,6 +20,7 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.bumptech.glide.Glide;
 import com.loosli.christian.sunshine.app.data.WeatherContract;
 import com.loosli.christian.sunshine.app.data.WeatherContract.WeatherEntry;
 
@@ -168,8 +169,11 @@ public class DetailFragment extends Fragment implements LoaderManager.LoaderCall
             // Read weather condition ID from cursor
             int weatherId = data.getInt(COL_WEATHER_CONDITION_ID);
             // Use weather art image
-            mIconView.setImageResource(Utility.getArtResourceForWeatherCondition(weatherId));
-
+            Glide.with(this)
+                    .load(Utility.getArtUrlForWeatherCondition(getActivity(), weatherId))
+                    .error(Utility.getArtResourceForWeatherCondition(weatherId))
+                    .crossFade()
+                    .into(mIconView);
 
             // Read date from cursor and update views for day of week and date
             long date = data.getLong(COL_WEATHER_DATE);
@@ -183,11 +187,11 @@ public class DetailFragment extends Fragment implements LoaderManager.LoaderCall
             mDescriptionView.setText(description);
             mDescriptionView.setContentDescription(getString(R.string.a11y_forecast, description));
 
-                    // For accessibility, add a content description to the icon field. Because the ImageView
-                            // is independently focusable, it's better to have a description of the image. Using
-                                    // null is appropriate when the image is purely decorative or when the image already
-                                            // has text describing it in the same UI component.
-                                                    mIconView.setContentDescription(getString(R.string.a11y_forecast_icon, description));
+            // For accessibility, add a content description to the icon field. Because the ImageView
+            // is independently focusable, it's better to have a description of the image. Using
+            // null is appropriate when the image is purely decorative or when the image already
+            // has text describing it in the same UI component.
+            mIconView.setContentDescription(getString(R.string.a11y_forecast_icon, description));
 
             // Read high temperature from cursor and update view
             boolean isMetric = Utility.isMetric(getActivity());
@@ -196,7 +200,6 @@ public class DetailFragment extends Fragment implements LoaderManager.LoaderCall
             String highString = Utility.formatTemperature(getActivity(), high);
             mHighTempView.setText(highString);
             mHighTempView.setContentDescription(getString(R.string.a11y_high_temp, highString));
-
 
             // Read low temperature from cursor and update view
             double low = data.getDouble(COL_WEATHER_MIN_TEMP);
