@@ -134,7 +134,6 @@ public class ForecastFragment extends Fragment implements LoaderManager.LoaderCa
         // The ForecastAdapter will take data from a source and
         // use it to populate the ListView it's attached to.
         mForecastAdapter = new ForecastAdapter(getActivity(), null, 0);
-        mForecastAdapter.setUseTodayLayout(mUseTodayLayout);
 
         View rootView = inflater.inflate(R.layout.fragment_main, container, false);
 
@@ -143,6 +142,7 @@ public class ForecastFragment extends Fragment implements LoaderManager.LoaderCa
         View emptyView = rootView.findViewById(R.id.listview_forecast_empty);
         mListView.setEmptyView(emptyView);
         mListView.setAdapter(mForecastAdapter);
+        // We'll call our MainActivity
         mListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int position, long id) {
@@ -249,9 +249,11 @@ public class ForecastFragment extends Fragment implements LoaderManager.LoaderCa
     }
 
     @Override
-    public void onLoadFinished(Loader<Cursor> cursorLoader, Cursor cursor) {
-        mForecastAdapter.swapCursor(cursor);
+    public void onLoadFinished(Loader<Cursor> cursorLoader, Cursor data) {
+        mForecastAdapter.swapCursor(data);
         if (mPosition != ListView.INVALID_POSITION) {
+            // If we don't need to restart the loader, and there's a desired position to restore
+            // to, do so now.
             mListView.smoothScrollToPosition(mPosition);
         }
         updateEmptyView();

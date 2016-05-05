@@ -12,8 +12,7 @@
      WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
      See the License for the specific language governing permissions and
      limitations under the License.
- -->
-<!-- Detail Layout for Grid -->
+ --><!-- Detail Layout for Grid -->
 <android.support.v7.widget.GridLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
@@ -23,6 +22,7 @@
     app:columnCount="2">
 
     <android.support.v7.widget.Space
+        android:layout_height="@dimen/detail_view_padding_vertical"
         app:layout_columnSpan="2"
         app:layout_columnWeight="1"
         app:layout_rowWeight="1" />
@@ -83,6 +83,7 @@
         tools:text="10" />
 
     <android.support.v7.widget.Space
+        android:layout_height="@dimen/detail_view_padding_vertical"
         app:layout_columnSpan="2"
         app:layout_columnWeight="1"
         app:layout_rowWeight="1" />
