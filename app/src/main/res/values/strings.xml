@@ -21,7 +21,7 @@
          It's to keep this short, so your launcher icon isn't displayed with "The greatest Wea"
          or something similar.
     -->
-    <string name="app_name">Sunshine</string>
+    <string name="app_name">Sunshine CHL</string>
 
     <!--
          By convention, "action" denotes that this String will be used as the label for an Action,
@@ -120,14 +120,14 @@
 
     <string name="pressure">Pressure</string>
     <!-- Pressure format CHAR LIMIT=25] -->
-    <string name="format_pressure"><xliff:g id="pressure">%1.0f</xliff:g> hPa</string>
+    <string name="format_pressure" translatable="false"><xliff:g id="pressure">%1.0f</xliff:g> hPa</string>
 
     <string name="humidity">Humidity</string>
     <!-- Humidity format CHAR LIMIT=25]-->
     <string name="format_humidity"><xliff:g id="humidity">%1.0f</xliff:g> %%</string>
 
     <!-- SyncAdapter related -->
-    <string name="sync_account_type">sunshine.christian.loosli.com</string>
+    <string name="sync_account_type" translatable="false">sunshine.christian.loosli.com</string>
     <string name="content_authority">com.loosli.christian.sunshine.app</string>
 
     <!-- Notification Format -->

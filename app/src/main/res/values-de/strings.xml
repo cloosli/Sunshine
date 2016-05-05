@@ -1,16 +1,18 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources xmlns:xliff="http://schemas.android.com/apk/res-auto">
-    <string name="app_name">Sunshine</string>
+    <string name="app_name">Sunshine CHL</string>
     <string name="action_share">Teilen</string>
     <string name="action_settings">Einstellungen</string>
     <string name="today">Heute</string>
     <string name="tomorrow">Morgen</string>
     <string name="title_activity_settings">Einstellungen</string>
     <string name="title_activity_detail">Detail</string>
-    <string name="format_pressure">Luftdruck: <xliff:g id="pressure">%1.0f</xliff:g> hPa</string>
-    <string name="format_humidity">Luftfeuchtigkeit: <xliff:g id="humidity">%1.0f</xliff:g> %%</string>
+    <string name="humidity">Luftfeuchtigkeit</string>
     <string name="pref_location_default">Rohrbach, CH</string>
     <string name="pref_units_label_metric">Metrisch</string>
     <string name="pref_units_label">Temperatureinheiten</string>
     <string name="pref_location_label">Standort</string>
+    <string name="pressure">Luftdruck</string>
+    <string name="wind">Wind</string>
+    <string name="condition_903">Kalt</string>
 </resources>
