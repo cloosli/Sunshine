@@ -11,5 +11,5 @@
      limitations under the License.
  -->
 <resources>
-    <item name="fragment_detail_start" type="layout">@layout/fragment_detail</item>
+    <item name="fragment_detail_start" type="layout">@layout/fragment_detail_twopane</item>
 </resources>
