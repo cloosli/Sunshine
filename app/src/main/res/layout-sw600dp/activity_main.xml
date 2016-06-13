@@ -10,8 +10,7 @@
      See the License for the specific language governing permissions and
      limitations under the License.
  -->
-<RelativeLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
@@ -30,8 +29,8 @@
             android:id="@+id/toolbar"
             android:layout_width="match_parent"
             android:layout_height="?attr/actionBarSize"
-            android:layout_alignParentTop="true"
             android:layout_alignParentLeft="true"
+            android:layout_alignParentTop="true"
 
             app:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar" />
 
@@ -42,21 +41,21 @@
             android:id="@+id/sunshineLogoAlign"
             android:layout_width="@dimen/list_icon"
             android:layout_height="0dp"
-            android:layout_marginLeft="@dimen/abc_list_item_padding_horizontal_material"
-            android:layout_marginStart="@dimen/abc_list_item_padding_horizontal_material"
             android:layout_alignParentLeft="true"
-            android:layout_below="@id/toolbar"/>
+            android:layout_below="@id/toolbar"
+            android:layout_marginLeft="@dimen/abc_list_item_padding_horizontal_material"
+            android:layout_marginStart="@dimen/abc_list_item_padding_horizontal_material" />
 
         <ImageView
             android:layout_width="wrap_content"
             android:layout_height="?attr/listPreferredItemHeight"
-            android:layout_gravity="center_vertical"
             android:layout_below="@id/sunshineLogoAlign"
+            android:layout_gravity="center_vertical"
             android:layout_marginLeft="@dimen/abc_list_item_padding_horizontal_material"
             android:layout_marginStart="@dimen/abc_list_item_padding_horizontal_material"
             android:layout_toRightOf="@id/sunshineLogoAlign"
-            android:src="@drawable/ic_logo"
-            android:contentDescription="@string/app_name"/>
+            android:contentDescription="@string/app_name"
+            android:src="@drawable/ic_logo" />
     </RelativeLayout>
 
     <!-- This is used as a strut to create two columns in our RelativeLayout -->
@@ -76,6 +75,8 @@
         android:layout_alignParentStart="true"
         android:layout_alignRight="@id/layout_center"
         android:layout_below="@id/appbar"
+        app:autoSelectView="true"
+        android:choiceMode="singleChoice"
         tools:layout="@android:layout/list_content" />
 
     <!-- This is used to give the card the appropriate margin
@@ -88,25 +89,24 @@
         android:layout_alignLeft="@id/layout_center"
         android:layout_alignParentEnd="true"
         android:layout_alignParentRight="true"
-        android:layout_marginTop="?attr/actionBarSize"
         android:layout_alignStart="@id/layout_center"
-        android:elevation="@dimen/appbar_elevation"
-        android:layout_marginRight="@dimen/list_item_extra_padding"
         android:layout_marginEnd="@dimen/list_item_extra_padding"
-        />
+        android:layout_marginRight="@dimen/list_item_extra_padding"
+        android:layout_marginTop="?attr/actionBarSize"
+        android:elevation="@dimen/appbar_elevation" />
+
     <android.support.v7.widget.CardView
         android:id="@+id/weather_detail_container"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:layout_alignBottom="@id/cardviewAligner"
         android:layout_alignLeft="@id/cardviewAligner"
         android:layout_alignRight="@id/cardviewAligner"
         android:layout_alignTop="@id/cardviewAligner"
-        android:layout_alignBottom="@id/cardviewAligner"
-        android:layout_marginRight="@dimen/abc_list_item_padding_horizontal_material"
-        android:layout_marginEnd="@dimen/abc_list_item_padding_horizontal_material"
         android:layout_marginBottom="@dimen/detail_container_bottom_margin"
+        android:layout_marginEnd="@dimen/abc_list_item_padding_horizontal_material"
+        android:layout_marginRight="@dimen/abc_list_item_padding_horizontal_material"
         app:cardElevation="@dimen/detail_card_elevation"
-        app:cardPreventCornerOverlap="false"
-        />
+        app:cardPreventCornerOverlap="false" />
 
 </RelativeLayout>
