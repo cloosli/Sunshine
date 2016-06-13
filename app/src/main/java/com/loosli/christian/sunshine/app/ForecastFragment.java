@@ -1,11 +1,13 @@
 package com.loosli.christian.sunshine.app;
 
+import android.annotation.TargetApi;
 import android.app.Activity;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.res.TypedArray;
 import android.database.Cursor;
 import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.support.v4.app.Fragment;
@@ -34,15 +36,18 @@ import com.loosli.christian.sunshine.app.sync.SunshineSyncAdapter;
  */
 public class ForecastFragment extends Fragment implements LoaderManager.LoaderCallbacks<Cursor>, SharedPreferences.OnSharedPreferenceChangeListener {
     public static final String LOG_TAG = ForecastFragment.class.getSimpleName();
-    private ForecastAdapter mForecastAdapter;
-
-    private RecyclerView mRecyclerView;
-    private int mPosition = RecyclerView.NO_POSITION;
-    private boolean mUseTodayLayout, mAutoSelectView;
-    private int mChoiceMode;
-
+    // These indices are tied to FORECAST_COLUMNS.  If FORECAST_COLUMNS changes, these
+    // must change.
+    static final int COL_WEATHER_ID = 0;
+    static final int COL_WEATHER_DATE = 1;
+    static final int COL_WEATHER_DESC = 2;
+    static final int COL_WEATHER_MAX_TEMP = 3;
+    static final int COL_WEATHER_MIN_TEMP = 4;
+    static final int COL_LOCATION_SETTING = 5;
+    static final int COL_WEATHER_CONDITION_ID = 6;
+    static final int COL_COORD_LAT = 7;
+    static final int COL_COORD_LONG = 8;
     private static final String SELECTED_KEY = "selected_position";
-
     private static final int FORECAST_LOADER = 0;
     // For the forecast view we're showing only a small subset of the stored data.
     // Specify the columns we need.
@@ -63,30 +68,11 @@ public class ForecastFragment extends Fragment implements LoaderManager.LoaderCa
             WeatherContract.LocationEntry.COLUMN_COORD_LAT,
             WeatherContract.LocationEntry.COLUMN_COORD_LONG
     };
-
-    // These indices are tied to FORECAST_COLUMNS.  If FORECAST_COLUMNS changes, these
-    // must change.
-    static final int COL_WEATHER_ID = 0;
-    static final int COL_WEATHER_DATE = 1;
-    static final int COL_WEATHER_DESC = 2;
-    static final int COL_WEATHER_MAX_TEMP = 3;
-    static final int COL_WEATHER_MIN_TEMP = 4;
-    static final int COL_LOCATION_SETTING = 5;
-    static final int COL_WEATHER_CONDITION_ID = 6;
-    static final int COL_COORD_LAT = 7;
-    static final int COL_COORD_LONG = 8;
-
-    /**
-     * A callback interface that all activities containing this fragment must
-     * implement. This mechanism allows activities to be notified of item
-     * selections.
-     */
-    public interface Callback {
-        /**
-         * DetailFragmentCallback for when an item has been selected.
-         */
-        public void onItemSelected(Uri dateUri);
-    }
+    private ForecastAdapter mForecastAdapter;
+    private RecyclerView mRecyclerView;
+    private int mPosition = RecyclerView.NO_POSITION;
+    private boolean mUseTodayLayout, mAutoSelectView;
+    private int mChoiceMode;
 
     public ForecastFragment() {
     }
@@ -180,6 +166,25 @@ public class ForecastFragment extends Fragment implements LoaderManager.LoaderCa
         // specify an adapter (see also next example)
         mRecyclerView.setAdapter(mForecastAdapter);
 
+        final View parallaxView = rootView.findViewById(R.id.parallax_bar);
+        if (parallaxView != null) {
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB) {
+                mRecyclerView.addOnScrollListener(new RecyclerView.OnScrollListener() {
+                    @TargetApi(Build.VERSION_CODES.HONEYCOMB)
+                    @Override
+                    public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
+                        super.onScrolled(recyclerView, dx, dy);
+                        int max = parallaxView.getHeight();
+                        if (dy > 0) {
+                            parallaxView.setTranslationY(Math.max(-max, parallaxView.getTranslationY() - dy / 2));
+                        } else {
+                            parallaxView.setTranslationY(Math.min(0, parallaxView.getTranslationY() - dy / 2));
+                        }
+                    }
+                });
+            }
+        }
+
         // If there's instance state, mine it for useful information.
         // The end-goal here is that the user never knows that turning their device sideways
         // does crazy lifecycle related things.  It should feel like some stuff stretched out,
@@ -247,7 +252,6 @@ public class ForecastFragment extends Fragment implements LoaderManager.LoaderCa
         super.onSaveInstanceState(outState);
     }
 
-
     @Override
     public Loader<Cursor> onCreateLoader(int i, Bundle bundle) {
         // This is called when a new Loader needs to be created.  This
@@ -280,7 +284,7 @@ public class ForecastFragment extends Fragment implements LoaderManager.LoaderCa
             mRecyclerView.smoothScrollToPosition(mPosition);
         }
         updateEmptyView();
-        if ( data.getCount() > 0 ) {
+        if (data.getCount() > 0) {
             mRecyclerView.getViewTreeObserver().addOnPreDrawListener(new ViewTreeObserver.OnPreDrawListener() {
                 @Override
                 public boolean onPreDraw() {
@@ -289,10 +293,10 @@ public class ForecastFragment extends Fragment implements LoaderManager.LoaderCa
                     if (mRecyclerView.getChildCount() > 0) {
                         mRecyclerView.getViewTreeObserver().removeOnPreDrawListener(this);
                         int itemPosition = mForecastAdapter.getSelectedItemPosition();
-                        if ( RecyclerView.NO_POSITION == itemPosition ) itemPosition = 0;
+                        if (RecyclerView.NO_POSITION == itemPosition) itemPosition = 0;
                         RecyclerView.ViewHolder vh = mRecyclerView.findViewHolderForAdapterPosition(itemPosition);
-                        if ( null != vh && mAutoSelectView ) {
-                            mForecastAdapter.selectView( vh );
+                        if (null != vh && mAutoSelectView) {
+                            mForecastAdapter.selectView(vh);
                         }
                         return true;
                     }
@@ -301,6 +305,14 @@ public class ForecastFragment extends Fragment implements LoaderManager.LoaderCa
             });
         }
 
+    }
+
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        if (null != mRecyclerView) {
+            mRecyclerView.clearOnScrollListeners();
+        }
     }
 
     @Override
@@ -320,9 +332,9 @@ public class ForecastFragment extends Fragment implements LoaderManager.LoaderCa
         use to determine why they aren't seeing weather.
      */
     private void updateEmptyView() {
-        if ( mForecastAdapter.getItemCount() == 0 ) {
+        if (mForecastAdapter.getItemCount() == 0) {
             TextView tv = (TextView) getView().findViewById(R.id.recyclerview_forecast_empty);
-            if ( null != tv ) {
+            if (null != tv) {
                 // if cursor is empty, why? do we have an invalid location
                 int message = R.string.empty_forecast_list;
                 @SunshineSyncAdapter.LocationStatus int location = Utility.getLocationStatus(getActivity());
@@ -351,5 +363,17 @@ public class ForecastFragment extends Fragment implements LoaderManager.LoaderCa
         if (key.equals(getString(R.string.pref_location_status_key))) {
             updateEmptyView();
         }
+    }
+
+    /**
+     * A callback interface that all activities containing this fragment must
+     * implement. This mechanism allows activities to be notified of item
+     * selections.
+     */
+    public interface Callback {
+        /**
+         * DetailFragmentCallback for when an item has been selected.
+         */
+        public void onItemSelected(Uri dateUri);
     }
 }
