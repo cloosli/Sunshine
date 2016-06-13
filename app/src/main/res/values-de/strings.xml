@@ -15,4 +15,11 @@
     <string name="pressure">Luftdruck</string>
     <string name="wind">Wind</string>
     <string name="condition_903">Kalt</string>
+    <string name="condition_2xx">Sturm</string>
+    <string name="condition_3xx">Nieselregen</string>
+    <string name="condition_500">Leichter Regen</string>
+    <string name="condition_501">Mittlerer Regen</string>
+    <string name="condition_800">Klar</string>
+    <string name="condition_905">Windig</string>
+    <string name="condition_502">Starkregen</string>
 </resources>
