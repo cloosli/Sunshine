@@ -13,5 +13,8 @@ Build Tools version 23.03
 Android Support AppCompat 23.2.1
 Android Support Annotations 23.2.1
 Android Support GridLayout 23.2.1
++Android Support CardView 23.2.1
++Android Support Design 23.2.1
++Android Support RecyclerView 23.2.1
 Google Play Services GCM 8.3.0
 BumpTech Glide 3.5.2
