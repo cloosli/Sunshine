@@ -105,6 +105,16 @@
                 <category android:name="com.loosli.christian.sunshine.app" />
             </intent-filter>
         </receiver>
+        <!-- Muzei Extension -->
+        <service android:name=".muzei.WeatherMuzeiSource"
+            android:icon="@drawable/ic_muzei"
+            android:label="@string/app_name"
+            android:description="@string/muzei_description" >
+            <intent-filter>
+                <action android:name="com.google.android.apps.muzei.api.MuzeiArtSource" />
+            </intent-filter>
+            <meta-data android:name="color" android:value="@color/primary" />
+        </service>
         <!-- Today Widget -->
         <receiver
             android:name=".widget.TodayWidgetProvider"
@@ -116,7 +126,7 @@
             <meta-data android:name="android.appwidget.provider"
                 android:resource="@xml/widget_info_today" />
         </receiver>
-        <service android:name=".widget.TodayWidgetIntentService" />
+        <!-- Detail Widget -->
         <receiver
             android:name=".widget.DetailWidgetProvider"
             android:label="@string/title_widget_detail"

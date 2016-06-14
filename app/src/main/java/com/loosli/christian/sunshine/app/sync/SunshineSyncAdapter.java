@@ -35,6 +35,7 @@ import com.loosli.christian.sunshine.app.MainActivity;
 import com.loosli.christian.sunshine.app.R;
 import com.loosli.christian.sunshine.app.Utility;
 import com.loosli.christian.sunshine.app.data.WeatherContract;
+import com.loosli.christian.sunshine.app.muezi.WeatherMuzeiSource;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -365,6 +366,7 @@ public class SunshineSyncAdapter extends AbstractThreadedSyncAdapter {
                         new String[]{Long.toString(dayTime.setJulianDay(julianStartDay - 1))});
 
                 updateWidgets();
+                updateMuezi();
                 notifyWeather();
             }
 
@@ -375,6 +377,15 @@ public class SunshineSyncAdapter extends AbstractThreadedSyncAdapter {
             Log.e(LOG_TAG, e.getMessage(), e);
             e.printStackTrace();
             setLocationStatus(getContext(), LOCATION_STATUS_SERVER_INVALID);
+        }
+    }
+
+    private void updateMuezi() {
+        // Muzei is only compatible with Jelly Bean MR1+ devices, so there's no need to update the
+        // Muzei background on lower API level devices
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN_MR1) {
+            Context context = getContext();
+            context.startService(new Intent(ACTION_DATA_UPDATED).setClass(context, WeatherMuzeiSource.class));
         }
     }
 
