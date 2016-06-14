@@ -35,7 +35,7 @@ import com.loosli.christian.sunshine.app.MainActivity;
 import com.loosli.christian.sunshine.app.R;
 import com.loosli.christian.sunshine.app.Utility;
 import com.loosli.christian.sunshine.app.data.WeatherContract;
-import com.loosli.christian.sunshine.app.muezi.WeatherMuzeiSource;
+import com.loosli.christian.sunshine.app.muzei.WeatherMuzeiSource;
 
 import org.json.JSONArray;
 import org.json.JSONException;

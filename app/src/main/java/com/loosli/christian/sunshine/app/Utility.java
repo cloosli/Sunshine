@@ -540,11 +540,11 @@ public class Utility {
 //        http://upload.wikimedia.org/wikipedia/commons/e/e7/Cloudy_Blue_Sky_(5031259890).jpg
 //        http://upload.wikimedia.org/wikipedia/commons/5/54/Cloudy_hills_in_Elis,_Greece_2.jpg
         if (weatherId >= 200 && weatherId <= 232) {
-            return "https://images.unsplash.com/photo-1427507791254-e8d2fe7db7c0";
+            return "http://upload.wikimedia.org/wikipedia/commons/2/28/Thunderstorm_in_Annemasse,_France.jpg";
         } else if (weatherId >= 300 && weatherId <= 321) {
             return "http://upload.wikimedia.org/wikipedia/commons/a/a0/Rain_on_leaf_504605006.jpg";
         } else if (weatherId >= 500 && weatherId <= 504) {
-            return "https://images.unsplash.com/photo-1434118489318-42a0e62c6235";
+            return "http://upload.wikimedia.org/wikipedia/commons/6/6c/Rain-on-Thassos.jpg";
         } else if (weatherId == 511) {
             return "http://upload.wikimedia.org/wikipedia/commons/b/b8/Fresh_snow.JPG";
         } else if (weatherId >= 520 && weatherId <= 531) {
