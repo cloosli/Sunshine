@@ -79,7 +79,6 @@
                 android:name="android.accounts.AccountAuthenticator"
                 android:resource="@xml/authenticator" />
         </service>
-
         <!-- The SyncAdapter service -->
         <service
             android:name=".sync.SunshineSyncService"
@@ -91,8 +90,6 @@
                 android:name="android.content.SyncAdapter"
                 android:resource="@xml/syncadapter" />
         </service>
-
-
         <!-- The Google Cloud Messaging receiver and services -->
         <receiver
             android:name="com.google.android.gms.gcm.GcmReceiver"
@@ -126,6 +123,7 @@
             <meta-data android:name="android.appwidget.provider"
                 android:resource="@xml/widget_info_today" />
         </receiver>
+        <service android:name=".widget.TodayWidgetIntentService" />
         <!-- Detail Widget -->
         <receiver
             android:name=".widget.DetailWidgetProvider"
@@ -133,7 +131,7 @@
             android:enabled="@bool/widget_detail_enabled" >
             <intent-filter>
                 <action android:name="android.appwidget.action.APPWIDGET_UPDATE" />
-                <action android:name="com.example.android.sunshine.app.ACTION_DATA_UPDATED" />
+                <action android:name="com.loosli.christian.sunshine.app.ACTION_DATA_UPDATED" />
             </intent-filter>
             <meta-data android:name="android.appwidget.provider"
                 android:resource="@xml/widget_info_detail" />
@@ -159,7 +157,7 @@
         </service>
         <service
             android:name=".gcm.RegistrationIntentService"
-            android:exported="false"></service>
+            android:exported="false" />
     </application>
 
 </manifest>

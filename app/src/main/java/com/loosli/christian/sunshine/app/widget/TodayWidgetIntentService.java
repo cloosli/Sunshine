@@ -52,7 +52,7 @@ public class TodayWidgetIntentService extends IntentService {
     private static final int INDEX_MIN_TEMP = 3;
 
     public TodayWidgetIntentService() {
-        super("TodayWidgetIntentService");
+        super(TodayWidgetIntentService.class.getSimpleName());
     }
 
     @Override
