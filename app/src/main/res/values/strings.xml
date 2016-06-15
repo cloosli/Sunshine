@@ -21,7 +21,7 @@
          It's to keep this short, so your launcher icon isn't displayed with "The greatest Wea"
          or something similar.
     -->
-    <string name="app_name">Sunshine CHL</string>
+    <string name="app_name">Sunshine</string>
 
     <!--
          By convention, "action" denotes that this String will be used as the label for an Action,
