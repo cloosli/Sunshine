@@ -50,7 +50,7 @@
     <string name="pref_location_longitude" translatable="false">loc-longitude</string>
 
     <!-- Default postal code for location preference [CHAR LIMIT=NONE] -->
-    <string name="pref_location_default" translatable="false">94043</string>
+    <string name="pref_location_default">94043</string>
 
     <!-- Content description for the get current location button in the location preference -->
     <string name="pref_current_location_desc">Use my location</string>
@@ -233,5 +233,5 @@
     <string name="gcm_weather_alert">Heads up: %1$s in %2$s!</string>
 
     <!-- For Google Places API Attributions -->
-    <string name="attribution_text">Powered by Google</string>
+    <string name="attribution_text" translatable="false">Powered by Google</string>
 </resources>

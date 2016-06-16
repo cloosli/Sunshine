@@ -1,4 +1,43 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="app_name">Sunshine</string>
+    <string name="action_map">Standort</string>
+    <string name="action_settings">Einstellungen</string>
+    <string name="action_share">Teilen</string>
+    <string name="condition_2xx">Sturm</string>
+    <string name="condition_3xx">Nieselregen</string>
+    <string name="condition_500">leichter Regen</string>
+    <string name="condition_501">mässiger Regen</string>
+    <string name="condition_502">starker Regen</string>
+    <string name="condition_503">Starkregen</string>
+    <string name="condition_504">extreme Niederschläge</string>
+    <string name="condition_511">Eisregen</string>
+    <string name="condition_520">leichten Schauer</string>
+    <string name="condition_521">Schauer</string>
+    <string name="condition_711">Rauch</string>
+    <string name="condition_741">Nebel</string>
+    <string name="condition_761">Staub</string>
+    <string name="condition_771">Sturmböen</string>
+    <string name="condition_800">Klar</string>
+    <string name="condition_801">meist Klar</string>
+    <string name="condition_802">Bewölkt</string>
+    <string name="condition_904">Heiss</string>
+    <string name="condition_903">Kalt</string>
+    <string name="pref_location_label">Standort</string>
+    <string name="pref_enable_notifications_label">Wetter Benachrichtigung</string>
+    <string name="humidity">Luftfeuchtigkeit</string>
+    <string name="muzei_description">Aktuelles Wetter</string>
+    <string name="pref_location_default">Zürich CH</string>
+    <string name="pref_units_label">Temperatureinheit</string>
+    <string name="pref_units_label_metric">metrisch</string>
+    <string name="pref_units_label_imperial">imperial</string>
+    <string name="pressure">Luftdruck</string>
+    <string name="title_activity_settings">Einstellungen</string>
+    <string name="title_widget_today">Wetter Heute</string>
+    <string name="title_widget_detail">Wetterbericht</string>
+    <string name="title_activity_detail">Details</string>
+    <string name="today">Heute</string>
+    <string name="tomorrow">Morgen</string>
+    <string name="wind">Wind</string>
+
 </resources>
