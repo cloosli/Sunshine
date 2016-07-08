@@ -1,9 +1,9 @@
 # Sunshine
 ## Sunshine Android App
 
-![alt tag](https://raw.githubusercontent.com/cloosli/Sunshine/master/art/main-n5.png)
-![alt tag](https://raw.githubusercontent.com/cloosli/Sunshine/master/art/detail-n5.png)
-![alt tag](https://raw.githubusercontent.com/cloosli/Sunshine/master/art/settings-n5.png)
+![alt tag](https://raw.githubusercontent.com/cloosli/Sunshine/master/art/n5x-Screenshot_20160615-101336_framed.png)
+![alt tag](https://raw.githubusercontent.com/cloosli/Sunshine/master/art/n5x-Screenshot_20160615-101357_framed.png)
+![alt tag](https://raw.githubusercontent.com/cloosli/Sunshine/master/art/n9-Screenshot_20160615-102238_framed.png)
 
 
 Pre-requisites
