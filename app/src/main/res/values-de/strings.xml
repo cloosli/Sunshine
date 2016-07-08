@@ -47,5 +47,14 @@
     <string name="condition_616">Regen und Schnee</string>
     <string name="condition_620">Schneeregen</string>
     <string name="condition_621"></string>
+    <string name="condition_803">Bewölkt</string>
+    <string name="condition_804">Ziemlich bewölkt</string>
+    <string name="condition_902">Hurrikan</string>
+    <string name="condition_905">Windig</string>
+    <string name="condition_906">Hagel</string>
+    <string name="condition_951">Ruhig</string>
+    <string name="condition_952">Leichte Briese</string>
+    <string name="condition_953">Sanfte Briese</string>
+    <string name="condition_954">Briese</string>
 
 </resources>
