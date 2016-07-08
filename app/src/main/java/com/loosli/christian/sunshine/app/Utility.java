@@ -18,6 +18,10 @@ import java.util.Locale;
  * Created by ChristianL on 14.12.15.
  */
 public class Utility {
+    private static final String LOG_TAG = Utility.class.getSimpleName();
+    // Format used for storing dates in the database.  ALso used for converting those strings
+    // back into date objects for comparison/processing.
+    public static final String DATE_FORMAT = "yyyyMMdd";
     // We'll default our latlong to 0. Yay, "Earth!"
     public static float DEFAULT_LATLONG = 0F;
 
@@ -72,10 +76,6 @@ public class Utility {
         return DateFormat.getDateInstance().format(date);
     }
 
-    // Format used for storing dates in the database.  ALso used for converting those strings
-    // back into date objects for comparison/processing.
-    public static final String DATE_FORMAT = "yyyyMMdd";
-
     /**
      * Helper method to convert the database representation of the date into something to display
      * to users.  As classy and polished a user experience as "20140102" is, we can do better.
@@ -120,7 +120,7 @@ public class Utility {
      * Helper method to convert the database representation of the date into something to display
      * to users.  As classy and polished a user experience as "20140102" is, we can do better.
      *
-     * @param context Context to use for resource localization
+     * @param context      Context to use for resource localization
      * @param dateInMillis The date in milliseconds
      * @return a user-friendly representation of the date.
      */
@@ -256,17 +256,19 @@ public class Utility {
      * @return true if Sunshine is using local graphics, false otherwise.
      */
     public static boolean usingLocalGraphics(Context context) {
-        SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(context);
-        String sunshineArtPack = context.getString(R.string.pref_art_pack_sunshine);
-        return prefs.getString(context.getString(R.string.pref_art_pack_key),
-                sunshineArtPack).equals(sunshineArtPack);
+//        SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(context);
+//        String sunshineArtPack = context.getString(R.string.pref_art_pack_sunshine);
+//        boolean usingLocalGraphics = prefs.getString(context.getString(R.string.pref_art_pack_key), sunshineArtPack).equals(sunshineArtPack);
+//        Log.d(LOG_TAG, "usingLocalGraphics >> " + usingLocalGraphics);
+//        return usingLocalGraphics;
+        return true;
     }
 
     /**
      * Helper method to provide the art urls according to the weather condition id returned
      * by the OpenWeatherMap call.
      *
-     * @param context Context to use for retrieving the URL format
+     * @param context   Context to use for retrieving the URL format
      * @param weatherId from OpenWeatherMap API response
      * @return url for the corresponding weather artwork. null if no relation is found.
      */
