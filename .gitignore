@@ -55,7 +55,8 @@ crashlytics-build.properties
 .LSOverride
 
 # Icon must end with two \r
-Icon
+Icon
+
 
 # Thumbnails
 ._*
@@ -113,5 +114,5 @@ gen-external-apklibs
 
 ###
 app/google-services.json
-
-
+app/src/debug/res/values/google-places-api.xml
+app/src/release/res/values/google-places-api.xml
