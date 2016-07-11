@@ -215,6 +215,10 @@ public class SunshineSyncAdapter extends AbstractThreadedSyncAdapter {
                                         String locationSetting)
             throws JSONException {
 
+        if (BuildConfig.DEBUG) {
+            Log.d(LOG_TAG, "getWeatherDataFromJson() >> \n"+forecastJsonStr);
+        }
+
         // Now we have a String representing the complete forecast in JSON Format.
         // Fortunately parsing is easy:  constructor takes the JSON string and converts it
         // into an Object hierarchy for us.
