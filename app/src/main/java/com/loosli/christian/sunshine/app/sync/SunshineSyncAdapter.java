@@ -228,6 +228,7 @@ public class SunshineSyncAdapter extends AbstractThreadedSyncAdapter {
         // Location information
         final String OWM_CITY = "city";
         final String OWM_CITY_NAME = "name";
+        final String OWM_CITY_COUNTRY = "country";
         final String OWM_COORD = "coord";
 
         // Location coordinate
@@ -276,6 +277,10 @@ public class SunshineSyncAdapter extends AbstractThreadedSyncAdapter {
 
             JSONObject cityJson = forecastJson.getJSONObject(OWM_CITY);
             String cityName = cityJson.getString(OWM_CITY_NAME);
+            String cityCountry = cityJson.getString(OWM_CITY_COUNTRY);
+            if (cityCountry != null) {
+                cityName +=  ", " + cityCountry;
+            }
 
             JSONObject cityCoord = cityJson.getJSONObject(OWM_COORD);
             double cityLatitude = cityCoord.getDouble(OWM_LATITUDE);
