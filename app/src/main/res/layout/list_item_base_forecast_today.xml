@@ -22,7 +22,7 @@
 
     <TextView
         android:id="@+id/list_item_date_textview"
-        android:layout_marginBottom="@dimen/abc_list_item_padding_horizontal_material"
+        android:layout_marginBottom="@dimen/list_item_forecast_location_padding"
         android:layout_marginTop="@dimen/abc_list_item_padding_horizontal_material"
         android:fontFamily="sans-serif"
         android:gravity="center_horizontal"
@@ -32,6 +32,19 @@
         app:layout_columnWeight="1"
         app:layout_gravity="fill_horizontal"
         tools:text="Today, April 03" />
+
+    <TextView
+        android:id="@+id/list_item_location_textview"
+        android:layout_marginBottom="@dimen/abc_list_item_padding_horizontal_material"
+        android:layout_marginTop="@dimen/list_item_forecast_location_padding"
+        android:fontFamily="sans-serif"
+        android:gravity="center_horizontal"
+        android:textAppearance="@style/TextAppearance.AppCompat.Widget.ActionMode.Subtitle"
+        android:textColor="@color/secondary_text"
+        app:layout_columnSpan="2"
+        app:layout_columnWeight="1"
+        app:layout_gravity="fill_horizontal"
+        tools:text="Rohrbach, CH" />
 
     <ImageView
         android:id="@+id/list_item_icon"

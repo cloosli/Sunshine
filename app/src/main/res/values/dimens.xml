@@ -74,4 +74,6 @@
          on devices that don't yet have Roboto -->
     <dimen name="forecast_widget_text_width">38dp</dimen>
 
+    <dimen name="list_item_forecast_location_padding">6dp</dimen>
+
 </resources>

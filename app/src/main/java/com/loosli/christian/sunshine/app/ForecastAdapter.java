@@ -41,6 +41,7 @@ public class ForecastAdapter extends RecyclerView.Adapter<ForecastAdapter.Foreca
         public final TextView mDescriptionView;
         public final TextView mHighTempView;
         public final TextView mLowTempView;
+        public final TextView mLocationView;
 
         public ForecastAdapterViewHolder(View view) {
             super(view);
@@ -49,6 +50,7 @@ public class ForecastAdapter extends RecyclerView.Adapter<ForecastAdapter.Foreca
             mDescriptionView = (TextView) view.findViewById(R.id.list_item_forecast_textview);
             mHighTempView = (TextView) view.findViewById(R.id.list_item_high_textview);
             mLowTempView = (TextView) view.findViewById(R.id.list_item_low_textview);
+            mLocationView = (TextView) view.findViewById(R.id.list_item_location_textview);
             view.setOnClickListener(this);
         }
 
@@ -162,6 +164,11 @@ public class ForecastAdapter extends RecyclerView.Adapter<ForecastAdapter.Foreca
         String lowString = Utility.formatTemperature(mContext, low);
         forecastAdapterViewHolder.mLowTempView.setText(lowString);
         forecastAdapterViewHolder.mLowTempView.setContentDescription(mContext.getString(R.string.a11y_low_temp, lowString));
+
+        String location = mCursor.getString(ForecastFragment.COL_CITY_NAME);
+        if (location != null && useLongToday) {
+            forecastAdapterViewHolder.mLocationView.setText(location);
+        }
 
         mICM.onBindViewHolder(forecastAdapterViewHolder, position);
     }
