@@ -116,3 +116,5 @@ gen-external-apklibs
 app/google-services.json
 app/src/debug/res/values/google-places-api.xml
 app/src/release/res/values/google-places-api.xml
+keystore.properties
+android-sunshine.jks
