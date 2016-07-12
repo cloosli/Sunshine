@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<resources>
+<resources xmlns:xliff="http://schemas.android.com/apk/res-auto">
     <string name="app_name">Sunshine</string>
     <string name="action_map">Standort</string>
     <string name="action_settings">Einstellungen</string>
@@ -27,7 +27,7 @@
     <string name="pref_enable_notifications_label">Wetter Benachrichtigung</string>
     <string name="humidity">Luftfeuchtigkeit</string>
     <string name="muzei_description">Aktuelles Wetter</string>
-    <string name="pref_location_default">Zürich Schweiz</string>
+    <string name="pref_location_default">Bern Schweiz</string>
     <string name="pref_units_label">Temperatureinheit</string>
     <string name="pref_units_label_metric">Metrisch</string>
     <string name="pref_units_label_imperial">Imperial</string>
@@ -46,7 +46,7 @@
     <string name="condition_615">Regen und Schnee</string>
     <string name="condition_616">Regen und Schnee</string>
     <string name="condition_620">Schneeregen</string>
-    <string name="condition_621"></string>
+    <string name="condition_621">Schneeregen</string>
     <string name="condition_803">Bewölkt</string>
     <string name="condition_804">Ziemlich bewölkt</string>
     <string name="condition_902">Hurrikan</string>
@@ -56,5 +56,44 @@
     <string name="condition_952">Leichte Briese</string>
     <string name="condition_953">Sanfte Briese</string>
     <string name="condition_954">Briese</string>
+    <string name="pref_enable_notifications_false">Nicht aktiviert</string>
+    <string name="pref_current_location_desc">Mein Standort</string>
+    <string name="empty_forecast_list">Keine Wetterdaten vorhanden</string>
+    <string name="empty_forecast_list_no_network">Keine Wetterdaten vorhanden. Es besteht keine Verbindung um Wetterdaten abzurufen.</string>
+    <string name="empty_forecast_list_server_down">Keine Wetterdaten vorhanden. Der Server liefert leere Daten.</string>
+    <string name="empty_forecast_list_server_error">Keine Wetterdaten vorhanden. Der Server schickte keine gültigen Daten. Bitte aktulisieren Sie die Sunshine App.</string>
+    <string name="empty_forecast_list_invalid_location">Keine Wetterdaten vorhanden. Der Standort in den Einstellungen wurde nicht erkannt.</string>
+    <string name="condition_962">Orkan</string>
+    <string name="condition_961">Heftiger Sturm</string>
+    <string name="condition_960">Sturm</string>
+    <string name="condition_959">Schwerer Sturm</string>
+    <string name="condition_958">Sturm</string>
+    <string name="condition_957">Starker Wind</string>
+    <string name="condition_956">Starke Briese</string>
+    <string name="condition_955">Frische Briese</string>
+    <string name="condition_901">Tropensturm</string>
+    <string name="condition_900">Tornado</string>
+    <string name="condition_781">Tornado</string>
+    <string name="condition_762">Vulkanasche</string>
+    <string name="condition_751">Sand</string>
+    <string name="condition_731">Sand, Staub</string>
+    <string name="condition_721">Dunst</string>
+    <string name="condition_701">Nebel</string>
+    <string name="condition_622">Schneeregen</string>
+    <string name="condition_602">Starker Schneefall</string>
+    <string name="condition_601">Schneefall</string>
+    <string name="condition_600">Leichter Schneefall</string>
+    <string name="condition_531">Schauer</string>
+    <string name="gcm_weather_alert">Aufgepasst: %1$s in %2$s!</string>
+    <string name="a11y_forecast">Prognose: <xliff:g id="condition">%1$s</xliff:g></string>
+    <string name="a11y_forecast_icon">Forecast icon: <xliff:g id="condition">%1$s</xliff:g></string>
+    <string name="a11y_high_temp">Hoch: <xliff:g id="high">%1$s</xliff:g></string>
+    <string name="a11y_low_temp">Tief: <xliff:g id="low">%1$s</xliff:g></string>
+    <string name="a11y_humidity">Feuchtigkeit: <xliff:g id="humidity">%1$s</xliff:g></string>
+    <string name="a11y_pressure">Luftdruck: <xliff:g id="pressure">%1$s</xliff:g></string>
+    <string name="a11y_wind">Windgeschwindigkeit und Windrichtung: <xliff:g id="wind">%1$s</xliff:g></string>
+    <string name="condition_unknown">Unbekannt (<xliff:g id="low">%1$s</xliff:g>)</string>
+    <string name="pref_location_error_description">Ungültiger Standort (<xliff:g id="location_setting">%1$s</xliff:g>)"</string>
+    <string name="pref_location_unknown_description">Prüfe Standort... (<xliff:g id="location_setting">%1$s</xliff:g>)"</string>
 
 </resources>
