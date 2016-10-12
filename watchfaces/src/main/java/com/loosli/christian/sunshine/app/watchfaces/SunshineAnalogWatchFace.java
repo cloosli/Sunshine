@@ -99,6 +99,7 @@ public class SunshineAnalogWatchFace extends CanvasWatchFaceService {
         private Paint mBackgroundPaint;
         private Bitmap mBackgroundBitmap;
         private Bitmap mGrayBackgroundBitmap;
+        private Bitmap mLogoBitmap;
 
         private boolean mAmbient;
         private boolean mLowBitAmbient;
@@ -131,6 +132,7 @@ public class SunshineAnalogWatchFace extends CanvasWatchFaceService {
             mBackgroundPaint = new Paint();
             mBackgroundPaint.setColor(Color.BLACK);
             mBackgroundBitmap = BitmapFactory.decodeResource(getResources(), R.drawable.bg);
+            mLogoBitmap = BitmapFactory.decodeResource(getResources(), R.drawable.ic_logo);
 
             /* Set defaults for colors */
             mWatchHandColor = Color.WHITE;
@@ -349,6 +351,7 @@ public class SunshineAnalogWatchFace extends CanvasWatchFaceService {
                 canvas.drawBitmap(mGrayBackgroundBitmap, 0, 0, mBackgroundPaint);
             } else {
                 canvas.drawBitmap(mBackgroundBitmap, 0, 0, mBackgroundPaint);
+                canvas.drawBitmap(mLogoBitmap, 30, 30, mBackgroundPaint);
             }
 
             /*
