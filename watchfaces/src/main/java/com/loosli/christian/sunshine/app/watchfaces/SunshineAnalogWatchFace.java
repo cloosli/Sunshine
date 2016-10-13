@@ -28,6 +28,7 @@ import android.graphics.ColorMatrix;
 import android.graphics.ColorMatrixColorFilter;
 import android.graphics.Paint;
 import android.graphics.Rect;
+import android.graphics.Typeface;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
@@ -35,6 +36,7 @@ import android.support.v7.graphics.Palette;
 import android.support.wearable.watchface.CanvasWatchFaceService;
 import android.support.wearable.watchface.WatchFaceService;
 import android.support.wearable.watchface.WatchFaceStyle;
+import android.util.Log;
 import android.view.SurfaceHolder;
 import android.widget.Toast;
 
@@ -50,6 +52,7 @@ import java.util.concurrent.TimeUnit;
  */
 public class SunshineAnalogWatchFace extends CanvasWatchFaceService {
 
+    private static final String LOGTAG = SunshineAnalogWatchFace.class.getSimpleName();
     /*
      * Update rate in milliseconds for interactive mode. We update once a second to advance the
      * second hand.
@@ -67,6 +70,9 @@ public class SunshineAnalogWatchFace extends CanvasWatchFaceService {
     }
 
     private class Engine extends CanvasWatchFaceService.Engine {
+        private Typeface WATCH_TEXT_TYPEFACE = Typeface.create(Typeface.DEFAULT, Typeface.BOLD);
+        private Typeface WATCH_DATE_TEXT_TYPEFACE = Typeface.create(Typeface.DEFAULT, Typeface.NORMAL);
+
         private static final float HOUR_STROKE_WIDTH = 5f;
         private static final float MINUTE_STROKE_WIDTH = 3f;
         private static final float SECOND_TICK_STROKE_WIDTH = 2f;
@@ -96,10 +102,18 @@ public class SunshineAnalogWatchFace extends CanvasWatchFaceService {
         private Paint mSecondPaint;
         private Paint mTickAndCirclePaint;
 
+        private Paint mForecastHighPaint;
+        private Paint mForecastLowPaint;
+        private Paint mDatePaint;
+
         private Paint mBackgroundPaint;
+        private Paint mBackgroundColorPaint;
+        private Paint mBackgroundWhitePaint;
+        private Paint mWeaterIconPaint;
         private Bitmap mBackgroundBitmap;
         private Bitmap mGrayBackgroundBitmap;
         private Bitmap mLogoBitmap;
+        private Bitmap mWeatherIconBitmap;
 
         private boolean mAmbient;
         private boolean mLowBitAmbient;
@@ -118,6 +132,8 @@ public class SunshineAnalogWatchFace extends CanvasWatchFaceService {
         /* Handler to update the time once a second in interactive mode. */
         private final Handler mUpdateTimeHandler = new EngineHandler(this);
 
+
+
         @Override
         public void onCreate(SurfaceHolder holder) {
             super.onCreate(holder);
@@ -133,11 +149,22 @@ public class SunshineAnalogWatchFace extends CanvasWatchFaceService {
             mBackgroundPaint.setColor(Color.BLACK);
             mBackgroundBitmap = BitmapFactory.decodeResource(getResources(), R.drawable.bg);
             mLogoBitmap = BitmapFactory.decodeResource(getResources(), R.drawable.ic_logo);
+            mWeatherIconBitmap = BitmapFactory.decodeResource(getResources(), R.drawable.ic_clear);
+//            mWeatherIconBitmap.setShadowLayer(SHADOW_RADIUS, 0, 0, mWatchHandShadowColor);
+
+            mBackgroundColorPaint = new Paint();
+            mBackgroundColorPaint.setColor(getResources().getColor(R.color.primary));
+
+            mBackgroundWhitePaint = new Paint();
+            mBackgroundWhitePaint.setColor(Color.WHITE);
 
             /* Set defaults for colors */
             mWatchHandColor = Color.WHITE;
             mWatchHandHighlightColor = Color.RED;
             mWatchHandShadowColor = Color.BLACK;
+
+            mWeaterIconPaint = new Paint();
+            mWeaterIconPaint.setShadowLayer(SHADOW_RADIUS, 0,0, mWatchHandShadowColor);
 
             mHourPaint = new Paint();
             mHourPaint.setColor(mWatchHandColor);
@@ -167,8 +194,30 @@ public class SunshineAnalogWatchFace extends CanvasWatchFaceService {
             mTickAndCirclePaint.setStyle(Paint.Style.STROKE);
             mTickAndCirclePaint.setShadowLayer(SHADOW_RADIUS, 0, 0, mWatchHandShadowColor);
 
+            mForecastHighPaint = new Paint();
+            mForecastHighPaint.setColor(mWatchHandColor);
+            mForecastHighPaint.setAntiAlias(true);
+            mForecastHighPaint.setShadowLayer(SHADOW_RADIUS, 0, 0, mWatchHandShadowColor);
+            mForecastHighPaint.setTypeface(WATCH_TEXT_TYPEFACE);
+            mForecastHighPaint.setTextSize(getResources().getDimension(R.dimen.text_size));
+
+            mForecastLowPaint = new Paint();
+            mForecastLowPaint.setColor(getResources().getColor(R.color.forecast_low));
+            mForecastLowPaint.setAntiAlias(true);
+            mForecastLowPaint.setShadowLayer(SHADOW_RADIUS, 0, 0, mWatchHandShadowColor);
+            mForecastLowPaint.setTypeface(WATCH_TEXT_TYPEFACE);
+            mForecastLowPaint.setTextSize(getResources().getDimension(R.dimen.text_size));
+
+            mDatePaint = new Paint();
+            mDatePaint.setColor(getResources().getColor(R.color.text_date));
+            mDatePaint.setAntiAlias(true);
+//            mDatePaint.setShadowLayer(SHADOW_RADIUS, 0, 0, mWatchHandShadowColor);
+            mDatePaint.setTypeface(WATCH_DATE_TEXT_TYPEFACE);
+            mDatePaint.setTextSize(getResources().getDimension(R.dimen.date_text_size));
+
+
             /* Extract colors from background image to improve watchface style. */
-            Palette.from(mBackgroundBitmap).generate(new Palette.PaletteAsyncListener() {
+            Palette.from(mWeatherIconBitmap).generate(new Palette.PaletteAsyncListener() {
                 @Override
                 public void onGenerated(Palette palette) {
                     if (palette != null) {
@@ -213,8 +262,8 @@ public class SunshineAnalogWatchFace extends CanvasWatchFaceService {
             updateTimer();
         }
 
-        private void updateWatchHandStyle(){
-            if (mAmbient){
+        private void updateWatchHandStyle() {
+            if (mAmbient) {
                 mHourPaint.setColor(Color.WHITE);
                 mMinutePaint.setColor(Color.WHITE);
                 mSecondPaint.setColor(Color.WHITE);
@@ -318,6 +367,7 @@ public class SunshineAnalogWatchFace extends CanvasWatchFaceService {
             grayPaint.setColorFilter(filter);
             canvas.drawBitmap(mBackgroundBitmap, 0, 0, grayPaint);
         }
+
         /**
          * Captures tap event (and tap type). The {@link WatchFaceService#TAP_TYPE_TAP} case can be
          * used for implementing specific logic to handle the gesture.
@@ -340,6 +390,7 @@ public class SunshineAnalogWatchFace extends CanvasWatchFaceService {
             }
             invalidate();
         }
+
         @Override
         public void onDraw(Canvas canvas, Rect bounds) {
             long now = System.currentTimeMillis();
@@ -348,11 +399,17 @@ public class SunshineAnalogWatchFace extends CanvasWatchFaceService {
             if (mAmbient && (mLowBitAmbient || mBurnInProtection)) {
                 canvas.drawColor(Color.BLACK);
             } else if (mAmbient) {
-                canvas.drawBitmap(mGrayBackgroundBitmap, 0, 0, mBackgroundPaint);
+//                canvas.drawBitmap(mGrayBackgroundBitmap, 0, 0, mBackgroundPaint);
+                canvas.drawRect(0, 0, mCenterX * 2, mCenterY * 2f, mBackgroundPaint);
             } else {
-                canvas.drawBitmap(mBackgroundBitmap, 0, 0, mBackgroundPaint);
-                canvas.drawBitmap(mLogoBitmap, 30, 30, mBackgroundPaint);
+                canvas.drawRect(0, 0, mCenterX * 2, mCenterY * 1.7f, mBackgroundColorPaint);
+                canvas.drawRect(0, mCenterY * 1.3f, mCenterX * 2, mCenterY * 2f, mBackgroundWhitePaint);
+//                canvas.drawBitmap(mBackgroundBitmap, 0, 0, mBackgroundPaint);
+                canvas.drawBitmap(mLogoBitmap, mCenterX - (104 / 2), mCenterY * 0.75f, mBackgroundPaint);
             }
+
+            canvas.drawText("MO, 12 OKT 2016", mCenterX / 2, mCenterY * 1.5f, mDatePaint);
+            canvas.drawText("BERN, CH", mCenterX / 2, mCenterY * 1.7f, mDatePaint);
 
             /*
              * Draw ticks. Usually you will want to bake this directly into the photo, but in
@@ -428,11 +485,45 @@ public class SunshineAnalogWatchFace extends CanvasWatchFaceService {
             /* Restore the canvas' original orientation. */
             canvas.restore();
 
+            /* weather data */
+            float totalWidth = mWeatherIconBitmap.getWidth()
+                    + mForecastHighPaint.measureText("10", 0, "10".length())
+                    + mForecastLowPaint.measureText("-2", 0, "-2".length())
+                    + 10 + 10;
+
+            float startXPos = mCenterY - (totalWidth/2);
+            float startYPos = mCenterY * 0.5f;
+
+            int xPos = (int) startXPos;
+            int yPos = (int) (startYPos - (mWeatherIconBitmap.getHeight() / 2));
+            if(!mAmbient) {
+                canvas.drawBitmap(mWeatherIconBitmap, xPos, yPos, mWeaterIconPaint);
+            }
+
+            xPos += mWeatherIconBitmap.getWidth() + 10;
+            yPos = (int) (startYPos - ((mForecastHighPaint.descent() + mForecastHighPaint.ascent()) / 2)) ;
+            canvas.drawText("10", xPos, yPos, mForecastHighPaint);
+
+            xPos += mForecastHighPaint.measureText("10", 0, "10".length()) + 10;
+            canvas.drawText("-2", xPos, yPos, mForecastLowPaint);
+
             /* Draw rectangle behind peek card in ambient mode to improve readability. */
             if (mAmbient) {
                 canvas.drawRect(mPeekCardBounds, mBackgroundPaint);
             }
         }
+
+
+//        private void drawCenter(Canvas canvas, Paint paint, String text) {
+//            canvas.getClipBounds(r);
+//            int cHeight = r.height();
+//            int cWidth = r.width();
+//            paint.setTextAlign(Paint.Align.LEFT);
+//            paint.getTextBounds(text, 0, text.length(), r);
+//            float x = cWidth / 2f - r.width() / 2f - r.left;
+//            float y = cHeight / 2f + r.height() / 2f - r.bottom;
+//            canvas.drawText(text, x, y, paint);
+//        }
 
         @Override
         public void onVisibilityChanged(boolean visible) {
