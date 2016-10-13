@@ -47,6 +47,10 @@ android {
     lintOptions {
         disable 'MissingTranslation'
     }
+    dexOptions {
+        maxProcessCount 4 // this is the default value
+        javaMaxHeapSize "2g"
+    }
 }
 
 dependencies {
