@@ -4,6 +4,8 @@
 ![alt tag](https://raw.githubusercontent.com/cloosli/Sunshine/master/art/n5x-Screenshot_20160615-101336_framed.png)
 ![alt tag](https://raw.githubusercontent.com/cloosli/Sunshine/master/art/n5x-Screenshot_20160615-101357_framed.png)
 ![alt tag](https://raw.githubusercontent.com/cloosli/Sunshine/master/art/n9-Screenshot_20160615-102238_framed.png)
+![alt tag](https://raw.githubusercontent.com/cloosli/Sunshine/master/art/Android_Wear_Square_API_24.png)
+![alt tag](https://raw.githubusercontent.com/cloosli/Sunshine/master/art/Android_Wear_Square_API_24_2.png)
 
 
 Pre-requisites
