@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package com.loosli.christian.sunshine.app.watchfaces;
+package com.loosli.christian.sunshine.app;
 
 import android.content.BroadcastReceiver;
 import android.content.Context;
@@ -32,8 +32,6 @@ import android.graphics.Typeface;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
-import android.support.annotation.NonNull;
-import android.support.annotation.Nullable;
 import android.support.v7.graphics.Palette;
 import android.support.wearable.watchface.CanvasWatchFaceService;
 import android.support.wearable.watchface.WatchFaceService;
@@ -65,7 +63,7 @@ import java.util.concurrent.TimeUnit;
  */
 public class SunshineAnalogWatchFace extends CanvasWatchFaceService {
 
-    private static final String LOGTAG = SunshineAnalogWatchFace.class.getSimpleName();
+    private static final String TAG = SunshineAnalogWatchFace.class.getSimpleName();
     /*
      * Update rate in milliseconds for interactive mode. We update once a second to advance the
      * second hand.
@@ -141,7 +139,7 @@ public class SunshineAnalogWatchFace extends CanvasWatchFaceService {
 
         private final Rect mPeekCardBounds = new Rect();
 
-        GoogleApiClient mGoogleApiClient;
+        private GoogleApiClient mGoogleApiClient;
 
         private final BroadcastReceiver mTimeZoneReceiver = new BroadcastReceiver() {
             @Override
@@ -251,6 +249,12 @@ public class SunshineAnalogWatchFace extends CanvasWatchFaceService {
             });
 
             mCalendar = Calendar.getInstance();
+
+            mGoogleApiClient = new GoogleApiClient.Builder(SunshineAnalogWatchFace.this)
+                    .addConnectionCallbacks(this)
+                    .addOnConnectionFailedListener(this)
+                    .addApi(Wearable.API)
+                    .build();
         }
 
         @Override
@@ -407,6 +411,7 @@ public class SunshineAnalogWatchFace extends CanvasWatchFaceService {
                     // TODO: Add code to handle the tap gesture.
                     Toast.makeText(getApplicationContext(), R.string.message, Toast.LENGTH_SHORT)
                             .show();
+                    requestWeatherUpdate();
                     break;
             }
             invalidate();
@@ -420,12 +425,10 @@ public class SunshineAnalogWatchFace extends CanvasWatchFaceService {
             if (mAmbient && (mLowBitAmbient || mBurnInProtection)) {
                 canvas.drawColor(Color.BLACK);
             } else if (mAmbient) {
-//                canvas.drawBitmap(mGrayBackgroundBitmap, 0, 0, mBackgroundPaint);
                 canvas.drawRect(0, 0, mCenterX * 2, mCenterY * 2f, mBackgroundPaint);
             } else {
                 canvas.drawRect(0, 0, mCenterX * 2, mCenterY * 1.7f, mBackgroundColorPaint);
                 canvas.drawRect(0, mCenterY * 1.3f, mCenterX * 2, mCenterY * 2f, mBackgroundWhitePaint);
-//                canvas.drawBitmap(mBackgroundBitmap, 0, 0, mBackgroundPaint);
                 canvas.drawBitmap(mLogoBitmap, mCenterX - (104 / 2), mCenterY * 0.75f, mBackgroundPaint);
             }
 
@@ -537,49 +540,22 @@ public class SunshineAnalogWatchFace extends CanvasWatchFaceService {
             }
         }
 
-
-//        private void drawCenter(Canvas canvas, Paint paint, String text) {
-//            canvas.getClipBounds(r);
-//            int cHeight = r.height();
-//            int cWidth = r.width();
-//            paint.setTextAlign(Paint.Align.LEFT);
-//            paint.getTextBounds(text, 0, text.length(), r);
-//            float x = cWidth / 2f - r.width() / 2f - r.left;
-//            float y = cHeight / 2f + r.height() / 2f - r.bottom;
-//            canvas.drawText(text, x, y, paint);
-//        }
-
         @Override
         public void onVisibilityChanged(boolean visible) {
             super.onVisibilityChanged(visible);
 
             if (visible) {
+                mGoogleApiClient.connect();
+
                 registerReceiver();
                 /* Update time zone in case it changed while we weren't visible. */
                 mCalendar.setTimeZone(TimeZone.getDefault());
-
-                if (mGoogleApiClient == null) {
-                    Log.d(LOGTAG, "mGoogleApiClient.build()");
-                    mGoogleApiClient = new GoogleApiClient.Builder(SunshineAnalogWatchFace.this)
-                            .addConnectionCallbacks(this)
-                            .addOnConnectionFailedListener(this)
-                            .addApi(Wearable.API)
-                            .build();
-                }
-
-                if (!mGoogleApiClient.isConnected()) {
-                    Log.d(LOGTAG, "mGoogleApiClient.connect()");
-                    mGoogleApiClient.connect();
-                }
 
                 invalidate();
             } else {
                 unregisterReceiver();
                 if (mGoogleApiClient != null && mGoogleApiClient.isConnected()) {
-                    Log.d(LOGTAG, "Wearable.DataApi.removeListener()");
                     Wearable.DataApi.removeListener(mGoogleApiClient, this);
-
-                    Log.d(LOGTAG, "mGoogleApiClient.disconnect()");
                     mGoogleApiClient.disconnect();
                 }
             }
@@ -643,32 +619,31 @@ public class SunshineAnalogWatchFace extends CanvasWatchFaceService {
         }
 
         @Override
-        public void onConnected(@Nullable Bundle bundle) {
-            Log.d(LOGTAG, "onConnected");
-
-            Log.d(LOGTAG, "Wearable.DataApi.addListener()");
-            Wearable.DataApi.addListener(mGoogleApiClient, this);
-
-//            requestWeatherUpdate();
+        public void onConnected(Bundle connectionHint) {
+            Log.d(TAG, "onConnected: " + connectionHint);
+            Wearable.DataApi.addListener(mGoogleApiClient, Engine.this);
+            requestWeatherUpdate();
         }
 
-        @Override
-        public void onConnectionSuspended(int i) {
-            Log.d(LOGTAG, "onConnectionSuspended");
+        @Override  // GoogleApiClient.ConnectionCallbacks
+        public void onConnectionSuspended(int cause) {
+            Log.d(TAG, "onConnectionSuspended: " + cause);
         }
 
-        @Override
-        public void onConnectionFailed(@NonNull ConnectionResult connectionResult) {
-            Log.d(LOGTAG, "onConnectionFailed");
+        @Override  // GoogleApiClient.OnConnectionFailedListener
+        public void onConnectionFailed(ConnectionResult result) {
+            if (Log.isLoggable(TAG, Log.DEBUG)) {
+            }
+            Log.d(TAG, "onConnectionFailed: " + result);
         }
 
         @Override
         public void onDataChanged(DataEventBuffer dataEventBuffer) {
-            Log.d(LOGTAG, "onDataChanged");
+            Log.d(TAG, "onDataChanged");
         }
 
         private void requestWeatherUpdate() {
-            Log.d(LOGTAG, "requestWeatherUpdate through Message API");
+            Log.d(TAG, "requestWeatherUpdate through Message API");
 
             Wearable.NodeApi.getConnectedNodes(mGoogleApiClient)
                     .setResultCallback(new ResultCallback<NodeApi.GetConnectedNodesResult>() {
@@ -677,6 +652,7 @@ public class SunshineAnalogWatchFace extends CanvasWatchFaceService {
                             final List<Node> nodes = getConnectedNodesResult.getNodes();
 
                             for (Node node : nodes) {
+                                Log.d(TAG, "send message to node: " + node.getDisplayName());
                                 Wearable.MessageApi.sendMessage(mGoogleApiClient
                                         , node.getId()
                                         , REQ_WEATHER_PATH
@@ -685,9 +661,9 @@ public class SunshineAnalogWatchFace extends CanvasWatchFaceService {
                                             @Override
                                             public void onResult(MessageApi.SendMessageResult sendMessageResult) {
                                                 if (sendMessageResult.getStatus().isSuccess()) {
-                                                    Log.d(LOGTAG, "Message successfully sent");
+                                                    Log.d(TAG, "Message successfully sent");
                                                 } else {
-                                                    Log.d(LOGTAG, "Message failed to send");
+                                                    Log.d(TAG, "Message failed to send");
                                                 }
                                             }
                                         }
