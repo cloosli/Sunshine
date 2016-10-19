@@ -180,7 +180,12 @@
             android:name=".wearable.WearableIntentService"
             android:enabled="true"
             android:exported="true" />
-
+        <receiver
+            android:name=".wearable.WearableProvider">
+            <intent-filter>
+                <action android:name="com.loosli.christian.sunshine.app.ACTION_DATA_UPDATED" />
+            </intent-filter>
+        </receiver>
         <service
             android:name=".wearable.MyWearableListenerService"
             android:enabled="true"
