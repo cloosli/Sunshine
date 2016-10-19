@@ -1,5 +1,7 @@
 package com.loosli.christian.sunshine.app.wearable;
 
+import android.content.Context;
+import android.content.Intent;
 import android.util.Log;
 
 import com.google.android.gms.wearable.DataApi;
@@ -32,5 +34,10 @@ public class MyWearableListenerService extends WearableListenerService
 
         String path = messageEvent.getPath();
         Log.d(TAG, "message path: " + path);
+        // Check if the path equals weather request
+        if (path.equals(REQ_WEATHER_PATH)) {
+            Context context = this.getApplicationContext();
+            context.startService(new Intent(context, WearableIntentService.class));
+        }
     }
 }

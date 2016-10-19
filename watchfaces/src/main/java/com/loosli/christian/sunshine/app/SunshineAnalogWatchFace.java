@@ -20,6 +20,7 @@ import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
+import android.content.res.Resources;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
@@ -36,6 +37,7 @@ import android.support.v7.graphics.Palette;
 import android.support.wearable.watchface.CanvasWatchFaceService;
 import android.support.wearable.watchface.WatchFaceService;
 import android.support.wearable.watchface.WatchFaceStyle;
+import android.text.TextUtils;
 import android.util.Log;
 import android.view.SurfaceHolder;
 import android.widget.Toast;
@@ -44,13 +46,18 @@ import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.common.api.ResultCallback;
 import com.google.android.gms.wearable.DataApi;
+import com.google.android.gms.wearable.DataEvent;
 import com.google.android.gms.wearable.DataEventBuffer;
+import com.google.android.gms.wearable.DataItem;
+import com.google.android.gms.wearable.DataMap;
+import com.google.android.gms.wearable.DataMapItem;
 import com.google.android.gms.wearable.MessageApi;
 import com.google.android.gms.wearable.Node;
 import com.google.android.gms.wearable.NodeApi;
 import com.google.android.gms.wearable.Wearable;
 
 import java.lang.ref.WeakReference;
+import java.text.DateFormat;
 import java.util.Calendar;
 import java.util.List;
 import java.util.TimeZone;
@@ -85,8 +92,14 @@ public class SunshineAnalogWatchFace extends CanvasWatchFaceService {
             GoogleApiClient.OnConnectionFailedListener,
             DataApi.DataListener {
 
-        private static final String REQ_PATH = "/weather";
         private static final String REQ_WEATHER_PATH = "/weather-req";
+        private static final String REQ_PATH = "/weather";
+        private static final String KEY_PACKAGE = "com.loosli.christian.sunshine.app.wearable.key.";
+        private static final String KEY_WEATHER_ID = KEY_PACKAGE + "weather_id";
+        private static final String KEY_CONDITION_ID = KEY_PACKAGE + "condition_id";
+        private static final String KEY_TEMP_MAX = KEY_PACKAGE + "temp_max";
+        private static final String KEY_TEMP_MIN = KEY_PACKAGE + "temp_min";
+        private static final String KEY_LOCATION = KEY_PACKAGE + "location";
 
         private Typeface WATCH_TEXT_TYPEFACE = Typeface.create(Typeface.DEFAULT, Typeface.BOLD);
         private Typeface WATCH_DATE_TEXT_TYPEFACE = Typeface.create(Typeface.DEFAULT, Typeface.NORMAL);
@@ -127,15 +140,31 @@ public class SunshineAnalogWatchFace extends CanvasWatchFaceService {
         private Paint mBackgroundPaint;
         private Paint mBackgroundColorPaint;
         private Paint mBackgroundWhitePaint;
-        private Paint mWeaterIconPaint;
+        private Paint mWeatherIconPaint;
         private Bitmap mBackgroundBitmap;
         private Bitmap mGrayBackgroundBitmap;
         private Bitmap mLogoBitmap;
-        private Bitmap mWeatherIconBitmap;
 
         private boolean mAmbient;
         private boolean mLowBitAmbient;
         private boolean mBurnInProtection;
+
+        private int mWeatherId;
+        private int mWeatherConditionId;
+        private double mWeatherMaxTemp;
+        private double mWeatherMinTemp;
+        private String mWeatherLocation;
+
+        // bitmaps
+        Bitmap mBitmapStatus;
+        Bitmap mBitmapClear;
+        Bitmap mBitmapClouds;
+        Bitmap mBitmapFog;
+        Bitmap mBitmapLightClouds;
+        Bitmap mBitmapLightRain;
+        Bitmap mBitmapRain;
+        Bitmap mBitmapSnow;
+        Bitmap mBitmapStorm;
 
         private final Rect mPeekCardBounds = new Rect();
 
@@ -164,12 +193,12 @@ public class SunshineAnalogWatchFace extends CanvasWatchFaceService {
                     .setAcceptsTapEvents(true)
                     .build());
 
+            Resources resources = SunshineAnalogWatchFace.this.getResources();
+
             mBackgroundPaint = new Paint();
             mBackgroundPaint.setColor(Color.BLACK);
             mBackgroundBitmap = BitmapFactory.decodeResource(getResources(), R.drawable.bg);
             mLogoBitmap = BitmapFactory.decodeResource(getResources(), R.drawable.ic_logo);
-            mWeatherIconBitmap = BitmapFactory.decodeResource(getResources(), R.drawable.ic_clear);
-//            mWeatherIconBitmap.setShadowLayer(SHADOW_RADIUS, 0, 0, mWatchHandShadowColor);
 
             mBackgroundColorPaint = new Paint();
             mBackgroundColorPaint.setColor(getResources().getColor(R.color.primary));
@@ -182,8 +211,8 @@ public class SunshineAnalogWatchFace extends CanvasWatchFaceService {
             mWatchHandHighlightColor = Color.RED;
             mWatchHandShadowColor = Color.BLACK;
 
-            mWeaterIconPaint = new Paint();
-            mWeaterIconPaint.setShadowLayer(SHADOW_RADIUS, 0, 0, mWatchHandShadowColor);
+            mWeatherIconPaint = new Paint();
+            mWeatherIconPaint.setShadowLayer(SHADOW_RADIUS, 0, 0, mWatchHandShadowColor);
 
             mHourPaint = new Paint();
             mHourPaint.setColor(mWatchHandColor);
@@ -230,25 +259,12 @@ public class SunshineAnalogWatchFace extends CanvasWatchFaceService {
             mDatePaint = new Paint();
             mDatePaint.setColor(getResources().getColor(R.color.text_date));
             mDatePaint.setAntiAlias(true);
-//            mDatePaint.setShadowLayer(SHADOW_RADIUS, 0, 0, mWatchHandShadowColor);
             mDatePaint.setTypeface(WATCH_DATE_TEXT_TYPEFACE);
             mDatePaint.setTextSize(getResources().getDimension(R.dimen.date_text_size));
 
-
-            /* Extract colors from background image to improve watchface style. */
-            Palette.from(mWeatherIconBitmap).generate(new Palette.PaletteAsyncListener() {
-                @Override
-                public void onGenerated(Palette palette) {
-                    if (palette != null) {
-                        mWatchHandHighlightColor = palette.getVibrantColor(Color.RED);
-                        mWatchHandColor = palette.getLightVibrantColor(Color.WHITE);
-                        mWatchHandShadowColor = palette.getDarkMutedColor(Color.BLACK);
-                        updateWatchHandStyle();
-                    }
-                }
-            });
-
             mCalendar = Calendar.getInstance();
+
+            initializeBitmaps(resources);
 
             mGoogleApiClient = new GoogleApiClient.Builder(SunshineAnalogWatchFace.this)
                     .addConnectionCallbacks(this)
@@ -298,12 +314,13 @@ public class SunshineAnalogWatchFace extends CanvasWatchFaceService {
                 mMinutePaint.setAntiAlias(false);
                 mSecondPaint.setAntiAlias(false);
                 mTickAndCirclePaint.setAntiAlias(false);
+                mForecastHighPaint.setAntiAlias(false);
+                mForecastLowPaint.setAntiAlias(false);
 
                 mHourPaint.clearShadowLayer();
                 mMinutePaint.clearShadowLayer();
                 mSecondPaint.clearShadowLayer();
                 mTickAndCirclePaint.clearShadowLayer();
-
             } else {
                 mHourPaint.setColor(mWatchHandColor);
                 mMinutePaint.setColor(mWatchHandColor);
@@ -314,6 +331,8 @@ public class SunshineAnalogWatchFace extends CanvasWatchFaceService {
                 mMinutePaint.setAntiAlias(true);
                 mSecondPaint.setAntiAlias(true);
                 mTickAndCirclePaint.setAntiAlias(true);
+                mForecastHighPaint.setAntiAlias(true);
+                mForecastLowPaint.setAntiAlias(true);
 
                 mHourPaint.setShadowLayer(SHADOW_RADIUS, 0, 0, mWatchHandShadowColor);
                 mMinutePaint.setShadowLayer(SHADOW_RADIUS, 0, 0, mWatchHandShadowColor);
@@ -393,29 +412,28 @@ public class SunshineAnalogWatchFace extends CanvasWatchFaceService {
             canvas.drawBitmap(mBackgroundBitmap, 0, 0, grayPaint);
         }
 
-        /**
-         * Captures tap event (and tap type). The {@link WatchFaceService#TAP_TYPE_TAP} case can be
-         * used for implementing specific logic to handle the gesture.
-         */
-        @Override
-        public void onTapCommand(int tapType, int x, int y, long eventTime) {
-            switch (tapType) {
-                case TAP_TYPE_TOUCH:
-                    // The user has started touching the screen.
-                    break;
-                case TAP_TYPE_TOUCH_CANCEL:
-                    // The user has started a different gesture or otherwise cancelled the tap.
-                    break;
-                case TAP_TYPE_TAP:
-                    // The user has completed the tap gesture.
-                    // TODO: Add code to handle the tap gesture.
-                    Toast.makeText(getApplicationContext(), R.string.message, Toast.LENGTH_SHORT)
-                            .show();
-                    requestWeatherUpdate();
-                    break;
-            }
-            invalidate();
-        }
+//        /**
+//         * Captures tap event (and tap type). The {@link WatchFaceService#TAP_TYPE_TAP} case can be
+//         * used for implementing specific logic to handle the gesture.
+//         */
+//        @Override
+//        public void onTapCommand(int tapType, int x, int y, long eventTime) {
+//            switch (tapType) {
+//                case TAP_TYPE_TOUCH:
+//                    // The user has started touching the screen.
+//                    break;
+//                case TAP_TYPE_TOUCH_CANCEL:
+//                    // The user has started a different gesture or otherwise cancelled the tap.
+//                    break;
+//                case TAP_TYPE_TAP:
+//                    // The user has completed the tap gesture.
+//                    // TODO: Add code to handle the tap gesture.
+//                    Toast.makeText(getApplicationContext(), R.string.message, Toast.LENGTH_SHORT).show();
+//                    requestWeatherUpdate();
+//                    break;
+//            }
+//            invalidate();
+//        }
 
         @Override
         public void onDraw(Canvas canvas, Rect bounds) {
@@ -432,8 +450,42 @@ public class SunshineAnalogWatchFace extends CanvasWatchFaceService {
                 canvas.drawBitmap(mLogoBitmap, mCenterX - (104 / 2), mCenterY * 0.75f, mBackgroundPaint);
             }
 
-            canvas.drawText("MO, 12 OKT 2016", mCenterX / 2, mCenterY * 1.5f, mDatePaint);
-            canvas.drawText("BERN, CH", mCenterX / 2, mCenterY * 1.7f, mDatePaint);
+            /* weather data */
+            if (mWeatherId != 0) {
+                String highString = String.format(getString(R.string.format_temperature), mWeatherMaxTemp);
+                String lowString = String.format(getString(R.string.format_temperature), mWeatherMinTemp);
+                Bitmap icon = getBitmapForWeatherCondition(mWeatherConditionId);
+
+                float totalWidth = icon.getWidth()
+                        + mForecastHighPaint.measureText(highString, 0, highString.length())
+                        + mForecastLowPaint.measureText(lowString, 0, lowString.length())
+                        + 10 + 10;
+
+                float startXPos = mCenterY - (totalWidth / 2);
+                float startYPos = mCenterY * 0.5f;
+
+                int xPos = (int) startXPos;
+                int yPos = (int) (startYPos - (icon.getHeight() / 2));
+                if (!mAmbient) {
+                    canvas.drawBitmap(icon, xPos, yPos, mWeatherIconPaint);
+                }
+
+                xPos += icon.getWidth() + 10;
+                yPos = (int) (startYPos - ((mForecastHighPaint.descent() + mForecastHighPaint.ascent()) / 2));
+                canvas.drawText(highString, xPos, yPos, mForecastHighPaint);
+
+                xPos += mForecastHighPaint.measureText(highString, 0, highString.length()) + 10;
+                canvas.drawText(lowString, xPos, yPos, mForecastLowPaint);
+
+                String dateText = DateFormat.getDateInstance(DateFormat.LONG).format(mCalendar.getTime());
+                int width = (int) mDatePaint.measureText(dateText, 0, dateText.length());
+                canvas.drawText(dateText, mCenterX - (width / 2), mCenterY * 1.5f, mDatePaint);
+
+                if (!TextUtils.isEmpty(mWeatherLocation)) {
+                    width = (int) mDatePaint.measureText(mWeatherLocation, 0, mWeatherLocation.length());
+                    canvas.drawText(mWeatherLocation, mCenterX - (width / 2), mCenterY * 1.7f, mDatePaint);
+                }
+            }
 
             /*
              * Draw ticks. Usually you will want to bake this directly into the photo, but in
@@ -508,31 +560,6 @@ public class SunshineAnalogWatchFace extends CanvasWatchFaceService {
 
             /* Restore the canvas' original orientation. */
             canvas.restore();
-
-            String highString = String.format(getString(R.string.format_temperature), 10f);
-            String lowString = String.format(getString(R.string.format_temperature), -2f);
-
-            /* weather data */
-            float totalWidth = mWeatherIconBitmap.getWidth()
-                    + mForecastHighPaint.measureText(highString, 0, highString.length())
-                    + mForecastLowPaint.measureText(lowString, 0, lowString.length())
-                    + 10 + 10;
-
-            float startXPos = mCenterY - (totalWidth / 2);
-            float startYPos = mCenterY * 0.5f;
-
-            int xPos = (int) startXPos;
-            int yPos = (int) (startYPos - (mWeatherIconBitmap.getHeight() / 2));
-            if (!mAmbient) {
-                canvas.drawBitmap(mWeatherIconBitmap, xPos, yPos, mWeaterIconPaint);
-            }
-
-            xPos += mWeatherIconBitmap.getWidth() + 10;
-            yPos = (int) (startYPos - ((mForecastHighPaint.descent() + mForecastHighPaint.ascent()) / 2));
-            canvas.drawText(highString, xPos, yPos, mForecastHighPaint);
-
-            xPos += mForecastHighPaint.measureText(highString, 0, highString.length()) + 10;
-            canvas.drawText(lowString, xPos, yPos, mForecastLowPaint);
 
             /* Draw rectangle behind peek card in ambient mode to improve readability. */
             if (mAmbient) {
@@ -638,8 +665,39 @@ public class SunshineAnalogWatchFace extends CanvasWatchFaceService {
         }
 
         @Override
-        public void onDataChanged(DataEventBuffer dataEventBuffer) {
+        public void onDataChanged(DataEventBuffer dataEvents) {
             Log.d(TAG, "onDataChanged");
+
+            for (DataEvent dataEvent : dataEvents) {
+                if (dataEvent.getType() != DataEvent.TYPE_CHANGED) {
+                    continue;
+                }
+
+                DataItem dataItem = dataEvent.getDataItem();
+                if (!dataItem.getUri().getPath().equals(REQ_PATH)) {
+                    continue;
+                }
+
+                DataMap dataMap = DataMapItem.fromDataItem(dataItem).getDataMap();
+                mWeatherId = dataMap.getInt(KEY_WEATHER_ID);
+                mWeatherConditionId = dataMap.getInt(KEY_CONDITION_ID);
+                mWeatherMaxTemp = dataMap.getDouble(KEY_TEMP_MAX);
+                mWeatherMinTemp = dataMap.getDouble(KEY_TEMP_MIN);
+                mWeatherLocation = dataMap.getString(KEY_LOCATION);
+
+                /* Extract colors from background image to improve watchface style. */
+                Palette.from(getBitmapForWeatherCondition(mWeatherConditionId)).generate(new Palette.PaletteAsyncListener() {
+                    @Override
+                    public void onGenerated(Palette palette) {
+                        if (palette != null) {
+                            mWatchHandHighlightColor = palette.getVibrantColor(Color.RED);
+                            mWatchHandColor = palette.getLightVibrantColor(Color.WHITE);
+                            mWatchHandShadowColor = palette.getDarkMutedColor(Color.BLACK);
+                            updateWatchHandStyle();
+                        }
+                    }
+                });
+            }
         }
 
         private void requestWeatherUpdate() {
@@ -671,6 +729,49 @@ public class SunshineAnalogWatchFace extends CanvasWatchFaceService {
                             }
                         }
                     });
+        }
+
+        private void initializeBitmaps(Resources resources) {
+            mBitmapStatus = BitmapFactory.decodeResource(resources, R.drawable.ic_status);
+            mBitmapClear = BitmapFactory.decodeResource(resources, R.drawable.ic_clear);
+            mBitmapClouds = BitmapFactory.decodeResource(resources, R.drawable.ic_cloudy);
+            mBitmapFog = BitmapFactory.decodeResource(resources, R.drawable.ic_fog);
+            mBitmapLightClouds = BitmapFactory.decodeResource(resources, R.drawable.ic_light_clouds);
+            mBitmapLightRain = BitmapFactory.decodeResource(resources, R.drawable.ic_light_rain);
+            mBitmapRain = BitmapFactory.decodeResource(resources, R.drawable.ic_rain);
+            mBitmapSnow = BitmapFactory.decodeResource(resources, R.drawable.ic_snow);
+            mBitmapStorm = BitmapFactory.decodeResource(resources, R.drawable.ic_storm);
+        }
+
+        private Bitmap getBitmapForWeatherCondition(int weatherId) {
+            // Based on weather code data found at:
+            // http://bugs.openweathermap.org/projects/api/wiki/Weather_Condition_Codes
+            if (weatherId >= 200 && weatherId <= 232) {
+                return mBitmapStorm;
+            } else if (weatherId >= 300 && weatherId <= 321) {
+                return mBitmapLightRain;
+            } else if (weatherId >= 500 && weatherId <= 504) {
+                return mBitmapRain;
+            } else if (weatherId == 511) {
+                return mBitmapSnow;
+            } else if (weatherId >= 520 && weatherId <= 531) {
+                return mBitmapRain;
+            } else if (weatherId >= 600 && weatherId <= 622) {
+                return mBitmapSnow;
+            } else if (weatherId >= 701 && weatherId <= 761) {
+                return mBitmapFog;
+            } else if (weatherId == 761 || weatherId == 781) {
+                return mBitmapStorm;
+            } else if (weatherId == 800) {
+                return mBitmapClear;
+            } else if (weatherId == 801) {
+                return mBitmapLightClouds;
+            } else if (weatherId >= 802 && weatherId <= 804) {
+                return mBitmapClouds;
+            }
+
+            // default bitmap
+            return mBitmapStatus;
         }
     }
 

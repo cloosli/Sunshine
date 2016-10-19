@@ -177,6 +177,11 @@
 
         <!-- Wearable -->
         <service
+            android:name=".wearable.WearableIntentService"
+            android:enabled="true"
+            android:exported="true" />
+
+        <service
             android:name=".wearable.MyWearableListenerService"
             android:enabled="true"
             android:exported="true">

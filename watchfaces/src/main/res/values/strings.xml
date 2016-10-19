@@ -1,6 +1,6 @@
 <resources xmlns:xliff="http://schemas.android.com/apk/res-auto">
     <string name="app_name">WatchFaces Sunshine</string>
-    <string name="message">Watch face tapped</string>
+    <string name="message">Update weather info</string>
     <string name="my_analog_name">Sunshine Analog</string>
     <string name="format_temperature"><xliff:g id="temp">%1.0f</xliff:g>\u00B0</string>
 </resources>
